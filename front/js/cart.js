@@ -1,6 +1,3 @@
-document.title = "Page Panier";
-
-
 
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
@@ -306,7 +303,8 @@ else {
 
     }); 
     boutonCommander.addEventListener("click", (event)=>{
-      event.preventDefault();// Empêche le rechargement de la page
+      event.preventDefault();
+      // Empêche le rechargement de la page
       if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
         alert("Votre panier est vide !");
     }
