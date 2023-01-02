@@ -6,7 +6,7 @@ fetch("http://localhost:3000/api/products")
 .then(data => {
   for (const listProducts of data){
     console.log(listProducts);
-    // on crée les élément html manquant de la page index.html et on y insère les données de l'api
+    // on crée les élément html manquant de la page index.html et on y insère les données de l'API
     let newA = document.createElement('a');
     newA.setAttribute("href", `./product.html?id=${listProducts._id}`);
     sectionItems.appendChild(newA);
@@ -30,7 +30,7 @@ fetch("http://localhost:3000/api/products")
     newArticle.appendChild(newP);
   }
 })
+//* En cas d'échec du fetch 
 .catch(err => {
   alert(`Une erreur s'est produite et ne permet pas d'afficher les produits de notre catalogue. Veuillez nous en excuser !`);
-  console.log("Erreur Fetch script.js", err);
 })

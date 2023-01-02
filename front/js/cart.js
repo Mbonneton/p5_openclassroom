@@ -1,5 +1,7 @@
 document.title = "Page Panier";
 
+
+
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
 
 const productsPositionHtml = document.getElementById("cart__items");
@@ -102,7 +104,7 @@ function deleteProduct() {
     selectSupprimer.forEach((selectSupprimer) => {
         selectSupprimer.addEventListener("click" , (event) => {
             event.preventDefault();
-            
+
             let myArticle = selectSupprimer.closest('article');
             console.log(myArticle);
             productRegisterInLocalStorage = productRegisterInLocalStorage.filter
