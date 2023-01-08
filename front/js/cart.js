@@ -122,38 +122,38 @@ function changeQuantity() {
 function deleteProduct() {
     let selectSupprimer = document.querySelectorAll(".deleteItem");
     selectSupprimer.forEach((selectSupprimer) => {
-            selectSupprimer.addEventListener("click" , (event) => {
-                event.preventDefault();
-                            
+        selectSupprimer.addEventListener("click" , (event) => {
+            event.preventDefault();
+
                 //*On pointe le parent hiérarchique <article> du lien "supprimer"
-                let myArticle = selectSupprimer.closest('article');
-                console.log(myArticle);
+            let myArticle = selectSupprimer.closest('article');
+            console.log(myArticle);
                 //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
-                productRegisterInLocalStorage = productRegisterInLocalStorage.filter
-                ( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
-                
+            productRegisterInLocalStorage = productRegisterInLocalStorage.filter
+            ( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
+
                 //*On met à jour le localStorage
-                localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
-                
+            localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
+
                 //*Alerte produit supprimé
-                alert("Ce produit va être supprimé du panier.");
-                 
-                
+            alert("Ce produit va être supprimé du panier.");
+
+
                 //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
-                if (myArticle.parentNode) {
-                    myArticle.parentNode.removeChild(myArticle);
-                }
+            if (myArticle.parentNode) {
+                myArticle.parentNode.removeChild(myArticle);
+            }
                 //-----Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),...
                 //...on affiche "Le panier est vide"-------------------------------------------------------------------
-                if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
-                    messagePanierVide();
-                }
-                else{
+            if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
+                messagePanierVide();
+            }
+            else{
                 // Et, on recalcule la quantité et le prix total du panier
                 recalculTotalQuantity();
                 recalculTotalPrice();
-                }
-            }); 
+            }
+        }); 
     })
 }
 
@@ -167,7 +167,7 @@ compositionProduitsPanier = 'Le panier est vide !';{
     document.getElementById("totalPrice").innerText = 0;
 }
 //*___________________________________Contrôle des infos avec Regex et Récupération des données du formulaire____________________________________
-    
+
         //*Création des expressions régulières pour contrôler les infos entrées par l'utilisateur
 let  regexFirstName = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
 let regexAddress = /^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/; 
@@ -278,7 +278,7 @@ else {
 
                 //*__________________________________________On cré les éléments html manquants de la page cart.html, dans la <section id="cart__items">__________________________
                 //*_______________________________________et on y insère les infos du localstorage________________________________________________
-                
+
                 //*_________________________________________Début Ajout Balises html_______________________________________________________________
                 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
             let newArticle = document.createElement('article');
@@ -301,9 +301,9 @@ else {
             newDivContent.setAttribute("class", "cart__item__content");
             newArticle.appendChild(newDivContent);   
  //*___________________________________________________Création de la div avec pour classe cart__item__content__description____________________________________________
-                        let newDivContentDescription = document.createElement('div');
-                        newDivContentDescription.setAttribute("class", "cart__item__content__description");
-                        newDivContent.appendChild(newDivContentDescription);
+            let newDivContentDescription = document.createElement('div');
+            newDivContentDescription.setAttribute("class", "cart__item__content__description");
+            newDivContent.appendChild(newDivContentDescription);
 //*_________________________________________________Création d'une balise titre h2 qui indique le nom du produit choisi par l'utilisateur___________________________________________
             let newH2 = document.createElement('h2');
             newH2.innerText = compositionProduitsPanier.name;
@@ -348,7 +348,7 @@ else {
             newPDelete.innerText = "Supprimer";
             newDivContentSettingsDelete.appendChild(newPDelete);
                   //*_____________________________________________Fin Ajout Balises html____________________________________________________________
-  
+
         //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
             totaux();
         }
@@ -359,27 +359,27 @@ else {
 
     });
      //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
-    boutonCommander.addEventListener("click", (event)=>{
-      event.preventDefault();
+boutonCommander.addEventListener("click", (event)=>{
+  event.preventDefault();
       //*Empêche le rechargement de la page
-      if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
-        alert("Votre panier est vide !");
-    }
-    else{
+  if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
+    alert("Votre panier est vide !");
+}
+else{
 
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
-        
+
         //*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
         //*________________On vérifie qu'aucun champ n'est vide_____________________
-       if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
-        alert("Vous devez renseigner tous les champs !");
-        event.preventDefault();
-    }
-    //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
-    else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
-     ||errorFormulaireCity === true || errorFormulaireEmail === true){
-        alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
+ if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
+    alert("Vous devez renseigner tous les champs !");
     event.preventDefault();
+}
+    //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
+else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
+   ||errorFormulaireCity === true || errorFormulaireEmail === true){
+    alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
+event.preventDefault();
 }
 else{
     //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
