@@ -119,37 +119,43 @@ function changeQuantity() {
     });
 }
 //*____________________________________________Fonction Suppression d'un article du panier_________________________________________________________
-let selectSupprimer = document.querySelectorAll(".deleteItem");
-selectSupprimer.forEach((selectSupprimer) => {
-    selectSupprimer.addEventListener("click" , (event) => {
-        event.preventDefault();
-            //*On pointe le parent hiérarchique <article> du lien "supprimer"
-        let myArticle = selectSupprimer.closest('article');
-        console.log(myArticle);
-            //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
-        productRegisterInLocalStorage = productRegisterInLocalStorage.filter
-        ( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
-             //*On met à jour le localStorage
-        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
-            //*Alerte produit supprimé
-        alert("Ce produit va être supprimé du panier.");
-
-            //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
-        if (myArticle.parentNode) {
-            myArticle.parentNode.removeChild(myArticle);
-        }
-             //*Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),
-                //*on affiche "Le panier est vide"
-        if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
-            messagePanierVide();
-        }
-            //* on recalcule la quantité et le prix total du panie
-        else{
-            recalculTotalQuantity();
-            recalculTotalPrice();
-        }
-    }); 
-}   
+function deleteProduct() {
+    let selectSupprimer = document.querySelectorAll(".deleteItem");
+    selectSupprimer.forEach((selectSupprimer) => {
+            selectSupprimer.addEventListener("click" , (event) => {
+                event.preventDefault();
+                            
+                //*On pointe le parent hiérarchique <article> du lien "supprimer"
+                let myArticle = selectSupprimer.closest('article');
+                console.log(myArticle);
+                //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
+                productRegisterInLocalStorage = productRegisterInLocalStorage.filter
+                ( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
+                
+                //*On met à jour le localStorage
+                localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
+                
+                //*Alerte produit supprimé
+                alert("Ce produit va être supprimé du panier.");
+                 
+                
+                //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
+                if (myArticle.parentNode) {
+                    myArticle.parentNode.removeChild(myArticle);
+                }
+                //-----Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),...
+                //...on affiche "Le panier est vide"-------------------------------------------------------------------
+                if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
+                    messagePanierVide();
+                }
+                else{
+                // Et, on recalcule la quantité et le prix total du panier
+                recalculTotalQuantity();
+                recalculTotalPrice();
+                }
+            }); 
+    })
+}
 
 //*___________________________________________Fonction pour afficher la phrase "Le panier est vide !"____________________________________________
 compositionProduitsPanier = 'Le panier est vide !';{
@@ -294,9 +300,10 @@ else {
             let newDivContent = document.createElement('div');
             newDivContent.setAttribute("class", "cart__item__content");
             newArticle.appendChild(newDivContent);   
- //*__________________________________________________________Création de la div avec pour classe cart__item__content__description-__________________________________________________________
-            newDivContentDescription.setAttribute("class", "cart__item__content__description");
-            newDivContent.appendChild(newDivContentDescription);
+ //*___________________________________________________Création de la div avec pour classe cart__item__content__description____________________________________________
+                        let newDivContentDescription = document.createElement('div');
+                        newDivContentDescription.setAttribute("class", "cart__item__content__description");
+                        newDivContent.appendChild(newDivContentDescription);
 //*_________________________________________________Création d'une balise titre h2 qui indique le nom du produit choisi par l'utilisateur___________________________________________
             let newH2 = document.createElement('h2');
             newH2.innerText = compositionProduitsPanier.name;
@@ -342,7 +349,7 @@ else {
             newDivContentSettingsDelete.appendChild(newPDelete);
                   //*_____________________________________________Fin Ajout Balises html____________________________________________________________
   
-                //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
+        //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
             totaux();
         }
         //*___________________________________________Appel de la fonction Supprimer un produit__________________________________________________________
