@@ -133,9 +133,9 @@ function messagePanierVide() {
     document.getElementById("totalQuantity").innerText = 0;
     document.getElementById("totalPrice").innerText = 0;
 }
-let textRegex = new RegExp("^[^.?!:;,/\\/_-]([. '-]?[a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
-let addressRegex = new RegExp("^[^.?!:;,/\\/_-]([, .:;'-]?[0-9a-zA-Zàâäéèêëïîôöùûüç])+[^.?!:;,/\\/_-]$");
-let emailRegex = new RegExp("^[^. ?!:;,/\\/_-]([._-]?[a-z0-9])+[^.?!: ;,/\\/_-][@][a-z0-9]+[.][a-z][a-z]+$");
+let  regexFirstName = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
+let regexAddress = /^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/; 
+let regexEmail = /^[_a-z0-9-]+(.[_a-z0-9-]+)*@[a-z0-9-]+(.[a-z0-9-]+)*(.[a-z]{2,4})$/;
 
 let inputFirstName = document.getElementById('firstName');
 let inputLastName = document.getElementById('lastName');
