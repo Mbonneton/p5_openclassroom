@@ -207,7 +207,7 @@ function affichagepanier (data){
         newArticle.setAttribute("data-color",`${colorProductPanier}`);
         productsPositionHtml.appendChild(newArticle);
 
-//*________________________________________Création de la div avec pour classe cart__item__img______________________________
+//*________________________________________Création de la div avec pour classe cart__item__img_____________________________
         let newDivImg = document.createElement('div');
         newDivImg.setAttribute("class", "cart__item__img");
         newArticle.appendChild(newDivImg);
