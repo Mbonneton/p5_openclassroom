@@ -80,7 +80,7 @@ function recalculTotalPrice() {
 let messageErrorQuantity = false;
 function changeQuantity() {
    //*On sélectionne l'élément html (input) dans lequel la quantité est modifiée
-    let changeQuantity = document.querySelectorAll(".itemQuantity");
+    let changeQuantitys = document.querySelectorAll(".itemQuantity");
     changeQuantity.forEach((item) => {
       //*On écoute le changement sur l'input "itemQuantity"
         item.addEventListener("change", (event) => {
@@ -157,15 +157,8 @@ function deleteProduct() {
     })
 }
 
-//*___________________________________________Fonction pour afficher la phrase "Le panier est vide !"____________________________________________
-compositionProduitsPanier = 'Le panier est vide !';{
-    let newH2 = document.createElement('h2');
-    productsPositionHtml.appendChild(newH2);
-    newH2.innerText = compositionProduitsPanier;
-    //*On insère 0 dans le html pour la quantité et le prix du panier
-    document.getElementById("totalQuantity").innerText = 0;
-    document.getElementById("totalPrice").innerText = 0;
-}
+
+
 //*___________________________________Contrôle des infos avec Regex et Récupération des données du formulaire____________________________________
 
         //*Création des expressions régulières pour contrôler les infos entrées par l'utilisateur
@@ -186,21 +179,131 @@ let checkValueCity;
 let checkValueEmail;
 //*Ecoute du contenu du champ "prénom", Vérification du prénom et affichage d'un message si celui-ci n'est pas correct
 inputFirstName.addEventListener('change', function() {
-    let firstNameErrorMsg = inputFirstName.nextElementSibling;
-    checkValueFirstName = textRegex.test(inputFirstName.value);
-    if (checkValueFirstName) {
-        firstNameErrorMsg.innerText = '';
-        errorFormulaireFirstName = false;
-    } 
-    else {
-        firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
-        errorFormulaireFirstName = true;
-    }
+
 });
 //*Ecoute du contenu du champ "nom", Vérification du nom et affichage d'un message si celui-ci n'est pas correct
-inputLastName.addEventListener('change', function() {
+
+//*__________________________________________Si le panier n'est pas vide alors, on affiche le contenu du localStorage______________________________________
+
+function affichagepanier (data){
+    if (productRegisterInLocalStorage.length >0) {for(let i = 0; i < productRegisterInLocalStorage.length; i++){
+        let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
+        let idProductPanier = productRegisterInLocalStorage[i].idProduct;
+        quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
+            //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
+        const compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
+             //*console.log(compositionProduitsPanier);
+            //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
+        priceProductPanier = compositionProduitsPanier.price;
+
+                //*__________________________________________On cré les éléments html manquants de la page cart.html, dans la <section id="cart__items">__________________________
+                //*_______________________________________et on y insère les infos du localstorage________________________________________________
+
+                //*_________________________________________Début Ajout Balises html_______________________________________________________________
+                //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
+        let newArticle = document.createElement('article');
+        newArticle.setAttribute("class","cart__item");
+        newArticle.setAttribute("data-id",`${idProductPanier}`);
+        newArticle.setAttribute("data-color",`${colorProductPanier}`);
+        productsPositionHtml.appendChild(newArticle);
+
+//*________________________________________Création de la div avec pour classe cart__item__img______________________________
+        let newDivImg = document.createElement('div');
+        newDivImg.setAttribute("class", "cart__item__img");
+        newArticle.appendChild(newDivImg);
+//*__________________________________________Création de la balise image qui contiendra la photo de chaque canapé_______________________________________
+        let newImg = document.createElement('img');
+        newImg.setAttribute("src", compositionProduitsPanier.imageUrl);
+        newImg.setAttribute("alt", compositionProduitsPanier.altTxt);
+        newDivImg.appendChild(newImg);
+//*_____________________________________________________Création de la div avec pour classe cart__item__content_________________________________________________________________________
+        let newDivContent = document.createElement('div');
+        newDivContent.setAttribute("class", "cart__item__content");
+        newArticle.appendChild(newDivContent);   
+ //*___________________________________________________Création de la div avec pour classe cart__item__content__description____________________________________________
+        let newDivContentDescription = document.createElement('div');
+        newDivContentDescription.setAttribute("class", "cart__item__content__description");
+        newDivContent.appendChild(newDivContentDescription);
+//*_________________________________________________Création d'une balise titre h2 qui indique le nom du produit choisi par l'utilisateur___________________________________________
+        let newH2 = document.createElement('h2');
+        newH2.innerText = compositionProduitsPanier.name;
+        newDivContentDescription.appendChild(newH2);
+   //*______________________________________________________Création d'une balise p qui indique la couleur choisie par l'utilisateur____________________________________________________________
+        let newPColor = document.createElement('p');
+        newPColor.innerText = colorProductPanier;
+        newDivContentDescription.appendChild(newPColor);
+  //*_________________________________________________________________Création d'une balise p qui indique le prix du canapé_______________________________________________________________________
+        let newPPrice = document.createElement('p');
+        newPPrice.innerText = compositionProduitsPanier.price + " €";
+        newDivContentDescription.appendChild(newPPrice);
+ //*____________________________________________________Création de la div avec pour classe cart__item__content__settings__________________________________________
+        let newDivContentSettings = document.createElement('div');
+        newDivContentSettings.setAttribute("class", "cart__item__content__settings");
+        newDivContent.appendChild(newDivContentSettings);
+ //*__________________________________________________________Création de la div avec pour classe cart__item__content__settings__quantity_______________________________________________
+        let newDivContentSettingsQuantity = document.createElement('div');
+        newDivContentSettingsQuantity.setAttribute("class", "cart__item__content__settings__quantity");
+        newDivContentSettings.appendChild(newDivContentSettingsQuantity);
+//*______________________________________________________________Création d'une balise p qui indique le texte "Qté :"______________________________________________
+        let newPQuantite = document.createElement('p');
+        newPQuantite.innerText = "Qté :";
+        newDivContentSettingsQuantity.appendChild(newPQuantite);
+
+             //*_________________________________Création d'une balise input avec la classe "itemQuantity" qui permet de modifier la quantité___________________________
+        let newPInput = document.createElement('input');
+        newPInput.setAttribute("type", "number");
+        newPInput.setAttribute("class", "itemQuantity");
+        newPInput.setAttribute("name", "itemQuantity");
+        newPInput.setAttribute("min", "1");
+        newPInput.setAttribute("max", "100");
+        newPInput.setAttribute("value", `${quantityProductPanier}`);
+        newDivContentSettingsQuantity.appendChild(newPInput);
+//*_______________________________________Création de la div avec pour classe cart__item__content__settings__delete______________________________
+        let newDivContentSettingsDelete = document.createElement('div');
+        newDivContentSettingsDelete.setAttribute("class", "cart__item__content__settings__delete");
+        newDivContentSettings.appendChild(newDivContentSettingsDelete);
+//*________________________________________Création d'une balise p qui indique le prix du canapé______________________________________
+        let newPDelete = document.createElement('p');
+        newPDelete.setAttribute("class", "deleteItem");
+        newPDelete.innerText = "Supprimer";
+        newDivContentSettingsDelete.appendChild(newPDelete);
+                  //*_____________________________________________Fin Ajout Balises html____________________________________________________________
+
+        //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
+        totaux();
+    }}
+        //* Si le panier est vide alors va mettre le message en avant.
+    else{compositionProduitsPanier = 'Le panier est vide !';
+    let newH2 = document.createElement('h2');
+    productsPositionHtml.appendChild(newH2);
+    newH2.innerText = compositionProduitsPanier;
+    //*On insère 0 dans le html pour la quantité et le prix du panier
+    document.getElementById("totalQuantity").innerText = 0;
+    document.getElementById("totalPrice").innerText = 0;
+
+
+}
+
+}
+
+
+fetch("http://localhost:3000/api/products")
+.then(response => response.json())
+.then(data => {
+    mesProduits = data;
+         //*on récupère la composition du panier.
+    affichagepanier(data);   
+        //*___________________________________________Appel de la fonction Supprimer un produit__________________________________________________________
+    deleteProduct();
+        //*_____________________________________Appel de le fonction Modifier la quantité d'un produit____________________________________________________
+    changeQuantity(); 
+
+});
+     //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
+boutonCommander.addEventListener("click", (event)=>{
+    event.preventDefault();
     let lastNameErrorMsg = inputLastName.nextElementSibling;
-    checkValueLastName = textRegex.test(inputLastName.value);
+    checkValueLastName = regexFirstName.test(inputLastName.value);
     if (checkValueLastName) {
         lastNameErrorMsg.innerText = '';
         errorFormulaireLastName = false;
@@ -209,11 +312,9 @@ inputLastName.addEventListener('change', function() {
         lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
         errorFormulaireLastName = true;
     }
-});
 //*Ecoute du contenu du champ "adresse", Vérification de l'adresse et affichage d'un message si celle-ci n'est pas correcte
-inputAddress.addEventListener('change', function() {
     let addressErrorMsg = inputAddress.nextElementSibling;
-    checkValueAddress = addressRegex.test(inputAddress.value);
+    checkValueAddress = regexAddress.test(inputAddress.value);
     if (checkValueAddress) {
         addressErrorMsg.innerText = '';
         errorFormulaireAddress = false;
@@ -222,11 +323,11 @@ inputAddress.addEventListener('change', function() {
         addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
         errorFormulaireAddress = true;
     }
-});
+
  //*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
-inputCity.addEventListener('change', function() {
+
     let cityErrorMsg = inputCity.nextElementSibling;
-    checkValueCity = textRegex.test(inputCity.value);
+    checkValueCity = regexAddress.test(inputCity.value);
     if (checkValueCity) {
         cityErrorMsg.innerText = '';
         errorFormulaireCity = false;
@@ -234,11 +335,11 @@ inputCity.addEventListener('change', function() {
         cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
         errorFormulaireCity = true;
     }
-});
+
  //*Ecoute du contenu du champ "email", Vérification de l'email et affichage d'un message si celui-ci n'est pas correct
-inputEmail.addEventListener('change', function() {
+
     let emailErrorMsg = inputEmail.nextElementSibling;
-    checkValueEmail = emailRegex.test(inputEmail.value);
+    checkValueEmail = regexEmail.test(inputEmail.value);
     if (checkValueEmail) {
         emailErrorMsg.innerText = '';
         errorFormulaireEmail = false;
@@ -247,184 +348,80 @@ inputEmail.addEventListener('change', function() {
         emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
         errorFormulaireEmail = true;
     }
-});
-//*__________________________________________________Affichage des produits du LocalStorage__________________________________________________________
-//*____________________________________Si le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide), on affiche "Le panier est vide"_____________________________________
-if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
-    messagePanierVide(); 
-    //*Si le client clique quand même sur le bouton commander, on lui rappelle que le panier est vide
-    boutonCommander.addEventListener("click", (event)=>{
-        alert("Votre panier est vide !");
-        event.preventDefault();
-    });
-}
-//*__________________________________________Si le panier n'est pas vide alors, on affiche le contenu du localStorage______________________________________
 
-else {
-    fetch("http://localhost:3000/api/products")
-    .then(response => response.json())
-    .then(data => {
-        mesProduits = data;
-         //*on récupère la couleur, la quantité et l'id de tous les produits contenus dans le localstorage et on les met dans des variables
-        for(let i = 0; i < productRegisterInLocalStorage.length; i++){
-            let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
-            let idProductPanier = productRegisterInLocalStorage[i].idProduct;
-            quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
-            //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
-            const compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
-             //*console.log(compositionProduitsPanier);
-            //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
-            priceProductPanier = compositionProduitsPanier.price;
-
-                //*__________________________________________On cré les éléments html manquants de la page cart.html, dans la <section id="cart__items">__________________________
-                //*_______________________________________et on y insère les infos du localstorage________________________________________________
-
-                //*_________________________________________Début Ajout Balises html_______________________________________________________________
-                //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
-            let newArticle = document.createElement('article');
-            newArticle.setAttribute("class","cart__item");
-            newArticle.setAttribute("data-id",`${idProductPanier}`);
-            newArticle.setAttribute("data-color",`${colorProductPanier}`);
-            productsPositionHtml.appendChild(newArticle);
-
-//*________________________________________Création de la div avec pour classe cart__item__img______________________________
-            let newDivImg = document.createElement('div');
-            newDivImg.setAttribute("class", "cart__item__img");
-            newArticle.appendChild(newDivImg);
-//*__________________________________________Création de la balise image qui contiendra la photo de chaque canapé_______________________________________
-            let newImg = document.createElement('img');
-            newImg.setAttribute("src", compositionProduitsPanier.imageUrl);
-            newImg.setAttribute("alt", compositionProduitsPanier.altTxt);
-            newDivImg.appendChild(newImg);
-//*_____________________________________________________Création de la div avec pour classe cart__item__content_________________________________________________________________________
-            let newDivContent = document.createElement('div');
-            newDivContent.setAttribute("class", "cart__item__content");
-            newArticle.appendChild(newDivContent);   
- //*___________________________________________________Création de la div avec pour classe cart__item__content__description____________________________________________
-            let newDivContentDescription = document.createElement('div');
-            newDivContentDescription.setAttribute("class", "cart__item__content__description");
-            newDivContent.appendChild(newDivContentDescription);
-//*_________________________________________________Création d'une balise titre h2 qui indique le nom du produit choisi par l'utilisateur___________________________________________
-            let newH2 = document.createElement('h2');
-            newH2.innerText = compositionProduitsPanier.name;
-            newDivContentDescription.appendChild(newH2);
-   //*______________________________________________________Création d'une balise p qui indique la couleur choisie par l'utilisateur____________________________________________________________
-            let newPColor = document.createElement('p');
-            newPColor.innerText = colorProductPanier;
-            newDivContentDescription.appendChild(newPColor);
-  //*_________________________________________________________________Création d'une balise p qui indique le prix du canapé_______________________________________________________________________
-            let newPPrice = document.createElement('p');
-            newPPrice.innerText = compositionProduitsPanier.price + " €";
-            newDivContentDescription.appendChild(newPPrice);
- //*____________________________________________________Création de la div avec pour classe cart__item__content__settings__________________________________________
-            let newDivContentSettings = document.createElement('div');
-            newDivContentSettings.setAttribute("class", "cart__item__content__settings");
-            newDivContent.appendChild(newDivContentSettings);
- //*__________________________________________________________Création de la div avec pour classe cart__item__content__settings__quantity_______________________________________________
-            let newDivContentSettingsQuantity = document.createElement('div');
-            newDivContentSettingsQuantity.setAttribute("class", "cart__item__content__settings__quantity");
-            newDivContentSettings.appendChild(newDivContentSettingsQuantity);
-//*______________________________________________________________Création d'une balise p qui indique le texte "Qté :"______________________________________________
-            let newPQuantite = document.createElement('p');
-            newPQuantite.innerText = "Qté :";
-            newDivContentSettingsQuantity.appendChild(newPQuantite);
-
-             //*_________________________________Création d'une balise input avec la classe "itemQuantity" qui permet de modifier la quantité___________________________
-            let newPInput = document.createElement('input');
-            newPInput.setAttribute("type", "number");
-            newPInput.setAttribute("class", "itemQuantity");
-            newPInput.setAttribute("name", "itemQuantity");
-            newPInput.setAttribute("min", "1");
-            newPInput.setAttribute("max", "100");
-            newPInput.setAttribute("value", `${quantityProductPanier}`);
-            newDivContentSettingsQuantity.appendChild(newPInput);
-//*_______________________________________Création de la div avec pour classe cart__item__content__settings__delete______________________________
-            let newDivContentSettingsDelete = document.createElement('div');
-            newDivContentSettingsDelete.setAttribute("class", "cart__item__content__settings__delete");
-            newDivContentSettings.appendChild(newDivContentSettingsDelete);
-//*________________________________________Création d'une balise p qui indique le prix du canapé______________________________________
-            let newPDelete = document.createElement('p');
-            newPDelete.setAttribute("class", "deleteItem");
-            newPDelete.innerText = "Supprimer";
-            newDivContentSettingsDelete.appendChild(newPDelete);
-                  //*_____________________________________________Fin Ajout Balises html____________________________________________________________
-
-        //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
-            totaux();
-        }
-        //*___________________________________________Appel de la fonction Supprimer un produit__________________________________________________________
-        deleteProduct();
-        //*_____________________________________Appel de le fonction Modifier la quantité d'un produit____________________________________________________
-        changeQuantity(); 
-
-    });
-     //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
-boutonCommander.addEventListener("click", (event)=>{
-  event.preventDefault();
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
+    checkValueFirstName = regexFirstName.test(inputFirstName.value);
+    if (checkValueFirstName) {
+        firstNameErrorMsg.innerText = '';
+        errorFormulaireFirstName = false;
+    } 
+    else {
+        firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
+        errorFormulaireFirstName = true;
+    }
       //*Empêche le rechargement de la page
-  if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
-    alert("Votre panier est vide !");
-}
-else{
+    if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
+        alert("Votre panier est vide !");
+
+    }
+    else{
 
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
 
         //*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
         //*________________On vérifie qu'aucun champ n'est vide_____________________
- if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
-    alert("Vous devez renseigner tous les champs !");
-    event.preventDefault();
-}
+     if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
+        alert("Vous devez renseigner tous les champs !");
+    }
     //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
-else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
-   ||errorFormulaireCity === true || errorFormulaireEmail === true){
-    alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
-event.preventDefault();
+    else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
+       ||errorFormulaireCity === true || errorFormulaireEmail === true){
+        alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
 }
 else{
     //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
     let idProducts = [];
     for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
-        idProducts.push(productRegisterInLocalStorage[l].idProduct);
+        for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);}
+
     }
     //*________________________________________console.log(idProducts);____________________________________________
             //*__________________________________On crée un objet dans lequel on met les infos "Contact" et les infos "Produits du panier" (l'id)_______________________________
-    const order = {
-        contact: {
-            firstName: inputFirstName.value,
-            lastName: inputLastName.value,
-            address: inputAddress.value,
-            city: inputCity.value,
-            email: inputEmail.value,
-        },
-        products: idProducts,
-    } 
+const order = {
+    contact: {
+        firstName: inputFirstName.value,
+        lastName: inputLastName.value,
+        address: inputAddress.value,
+        city: inputCity.value,
+        email: inputEmail.value,
+    },
+    products: idProducts,
+} 
       //*___________________________________________________console.log(order);_________________________________________________
             //*_______________________________________On indique la méthode d'envoi des données___________________________________
-    const options = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json', 
-            'Content-Type': 'application/json' 
-        },
-        body: JSON.stringify(order)
-    };
+const options = {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json', 
+        'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(order)
+};
     //*____________________________________________________________console.log(options);______________________________________
             //*____________________________________on envoie les données Contact et l'id des produits à l'API______________________________
-    fetch("http://localhost:3000/api/products/order", options)
-    .then((response) => response.json())
-    .then((data) => {
+fetch("http://localhost:3000/api/products/order", options)
+.then((response) => response.json())
+.then((data) => {
         //*__________________________________________________________console.log(data);_________________________________________
                 //*_________________________________________on redirige vers la page de confirmation de commande en passant l'orderId (numéro de commande) dans l'URL____________________________
-      document.location.href = `confirmation.html?orderId=${data.orderId}`;
-  })
-    .catch((err) => {
-        console.log("Erreur Fetch product.js", err);
-        alert ("Un problème a été rencontré lors de l'envoi du formulaire.");
-    });
+  document.location.href = `confirmation.html?orderId=${data.orderId}`;
+})
+.catch((err) => {
+    console.log("Erreur Fetch product.js", err);
+    alert ("Un problème a été rencontré lors de l'envoi du formulaire.");
+});
     //*____________________________________________On vide le localStorage__________________________________________________________________
-    localStorage.clear();
+localStorage.clear();
 };//*_________________________________________________________fin else________________________________________________________________________
 }
 }); //*________________________________________________________fin écoute bouton Commander_______________________________________________________
-}; //*______________________________________________________________fin else______________________________________________________________________
