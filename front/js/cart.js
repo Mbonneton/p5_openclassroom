@@ -184,7 +184,13 @@ inputFirstName.addEventListener('change', function() {
 //*Ecoute du contenu du champ "nom", Vérification du nom et affichage d'un message si celui-ci n'est pas correct
 
 //*__________________________________________Si le panier n'est pas vide alors, on affiche le contenu du localStorage______________________________________
-
+function balisephotopanier (baliseimg,produit,balisediv){
+  baliseimg.setAttribute("src",produit.imageUrl)
+ baliseimg.setAttribute("alt",produit.altTxt)
+balisediv.appendChild(baliseimg)
+return balisediv
+}
+function 
 function affichagepanier (data){
     if (productRegisterInLocalStorage.length >0) {for(let i = 0; i < productRegisterInLocalStorage.length; i++){
         let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
@@ -201,6 +207,7 @@ function affichagepanier (data){
 
                 //*_________________________________________Début Ajout Balises html_______________________________________________________________
                 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
+       
         let newArticle = document.createElement('article');
         newArticle.setAttribute("class","cart__item");
         newArticle.setAttribute("data-id",`${idProductPanier}`);
@@ -213,9 +220,8 @@ function affichagepanier (data){
         newArticle.appendChild(newDivImg);
 //*__________________________________________Création de la balise image qui contiendra la photo de chaque canapé_______________________________________
         let newImg = document.createElement('img');
-        newImg.setAttribute("src", compositionProduitsPanier.imageUrl);
-        newImg.setAttribute("alt", compositionProduitsPanier.altTxt);
-        newDivImg.appendChild(newImg);
+        balisephotopanier(newImg,compositionProduitsPanier,newDivImg)
+        
 //*_____________________________________________________Création de la div avec pour classe cart__item__content_________________________________________________________________________
         let newDivContent = document.createElement('div');
         newDivContent.setAttribute("class", "cart__item__content");
