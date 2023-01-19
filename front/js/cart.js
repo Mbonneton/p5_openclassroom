@@ -286,13 +286,9 @@ function affichagepanier (data){
     //*On insère 0 dans le html pour la quantité et le prix du panier
     document.getElementById("totalQuantity").innerText = 0;
     document.getElementById("totalPrice").innerText = 0;
-
-
 }
 
 }
-
-
 fetch("http://localhost:3000/api/products")
 .then(response => response.json())
 .then(data => {
