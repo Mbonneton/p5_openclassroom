@@ -24,7 +24,8 @@ if (productId !== null){
             
             select.appendChild(option);
         })
-                 //*Sélection du bouton Ajouter au panier.
+
+               //*Sélection du bouton Ajouter au panier.
         const selectBoutonPanier = document.querySelector("#addToCart");
                  //*Ecoute du bouton Panier pour envoyer les choix de l'utilisateur
         selectBoutonPanier.addEventListener("click", (event)=>{
