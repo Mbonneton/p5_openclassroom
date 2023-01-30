@@ -1,5 +1,19 @@
-//*Déclaration de la variable "productRegisterInLocalStorage" dans laquelle on met les keys et les values qui sont dans le local Storage.
-//*JSON.parse c'est pour convertir les données au format JSON qui sont dans le localStorage en objet javascript
+
+main()
+
+async function main() {
+  const products = await getProducts()
+  let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
+
+
+async function getProducts() {
+  return fetch("http://localhost:3000/api/products") // requête
+    .then(res => res.json()) // parse du JSON
+    .catch(err => { // gestion d'erreur
+      alert('Erreur de chargement des produits')
+    })
+}
+
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
    //*console.log(productRegisterInLocalStorage.
 //*Sélection de la balise de la page product.html dans laquel on va insérer les produits et leurs infos.
@@ -190,6 +204,7 @@ function balisephotopanier (baliseimg,produit,balisediv){
 balisediv.appendChild(baliseimg)
 return balisediv
 }
+
 function 
 function affichagepanier (data){
     if (productRegisterInLocalStorage.length >0) {for(let i = 0; i < productRegisterInLocalStorage.length; i++){
@@ -289,18 +304,7 @@ function affichagepanier (data){
 }
 
 }
-fetch("http://localhost:3000/api/products")
-.then(response => response.json())
-.then(data => {
-    mesProduits = data;
-         //*on récupère la composition du panier.
-    affichagepanier(data);   
-        //*___________________________________________Appel de la fonction Supprimer un produit__________________________________________________________
-    deleteProduct();
-        //*_____________________________________Appel de le fonction Modifier la quantité d'un produit____________________________________________________
-    changeQuantity(); 
 
-});
      //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
 boutonCommander.addEventListener("click", (event)=>{
     event.preventDefault();
