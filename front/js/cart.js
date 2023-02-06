@@ -225,7 +225,44 @@ async function getProducts() {
     let couleurproduit=document.createElement('p')
     couleurproduit.innerText=colordata
     descriptioncart.appendChild(couleurproduit)
-    
+
+
+
+
+
+    let prix = document.createElement('p')
+    prix.innerText= produit.name
+    descriptioncart.appendChild(prix)
+
+    let settingcontent =document.createElement('div')
+    settingcontent.setAttribute("class", "cart__item__content__settings")
+    carteitem.appendChild(settingcontent)
+
+    let quantitésetting =document.createElement('div')
+    quantitesetting.setAttribute("class", "cart__item__content__settings__quantity")
+    settingcontent.appendChild(quantitesetting)
+
+    let quantités=document.createElement('p')
+    quantités.innerText=produit
+    quantitésetting.appendChild(quantités)
+
+    let quantiteitems =document.createElement('input')
+    quantiteitems.setAttribute("type", "number")
+    quantiteitems.setAttribute("class", "itemQuantity")
+    quantiteitems.setAttribute("name", "itemQuantity")
+    quantiteitems.setAttribute("min", "1")
+    quantiteitems.setAttribute("max", "100")
+    quantiteitems.setAttribute("value", "produit")
+    quantitesetting.appendChild(quantiteitems)
+
+    let deletitem = document.createElement('div')
+    deletitem.setAttribute("class", "cart__item__content__settings__delete")
+    settingcontent.appendChild(deletitem)
+
+    let supp = document.createElement('p')
+    supp.setAttribute("class", "deleteItem")
+    supp.innerText=produit
+    deletitem.appendChild(supp)
 
   }
   ;
@@ -234,6 +271,45 @@ async function getProducts() {
   let newPPrice = document.createElement('p');
   newPPrice.innerText = compositionProduitsPanier.price + " €";
   newDivContentDescription.appendChild(newPPrice);
+
+  let newDivContentSettings = document.createElement('div');
+  newDivContentSettings.setAttribute("class", "cart__item__content__settings");
+  newDivContent.appendChild(newDivContentSettings);
+
+ //*__________________________________________________________Création de la div avec pour classe cart__item__content__settings__quantity_______________________________________________
+  let newDivContentSettingsQuantity = document.createElement('div');
+  newDivContentSettingsQuantity.setAttribute("class", "cart__item__content__settings__quantity");
+  newDivContentSettings.appendChild(newDivContentSettingsQuantity);
+//*______________________________________________________________Création d'une balise p qui indique le texte "Qté :"______________________________________________
+  let newPQuantite = document.createElement('p');
+  newPQuantite.innerText = "Qté :";
+  newDivContentSettingsQuantity.appendChild(newPQuantite);
+
+
+             //*_________________________________Création d'une balise input avec la classe "itemQuantity" qui permet de modifier la quantité___________________________
+  let newPInput = document.createElement('input');
+  newPInput.setAttribute("type", "number");
+  newPInput.setAttribute("class", "itemQuantity");
+  newPInput.setAttribute("name", "itemQuantity");
+  newPInput.setAttribute("min", "1");
+  newPInput.setAttribute("max", "100");
+  newPInput.setAttribute("value", `${quantityProductPanier}`);
+  newDivContentSettingsQuantity.appendChild(newPInput);
+//*_______________________________________Création de la div avec pour classe cart__item__content__settings__delete______________________________
+  let newDivContentSettingsDelete = document.createElement('div');
+  newDivContentSettingsDelete.setAttribute("class", "cart__item__content__settings__delete");
+  newDivContentSettings.appendChild(newDivContentSettingsDelete);
+
+
+
+  let newPDelete = document.createElement('p');
+  newPDelete.setAttribute("class", "deleteItem");
+  newPDelete.innerText = "Supprimer";
+  newDivContentSettingsDelete.appendChild(newPDelete);
+
+
+
+
 
 
   function 
@@ -258,36 +334,9 @@ async function getProducts() {
 
 
  //*____________________________________________________Création de la div avec pour classe cart__item__content__settings__________________________________________
-      let newDivContentSettings = document.createElement('div');
-      newDivContentSettings.setAttribute("class", "cart__item__content__settings");
-      newDivContent.appendChild(newDivContentSettings);
- //*__________________________________________________________Création de la div avec pour classe cart__item__content__settings__quantity_______________________________________________
-      let newDivContentSettingsQuantity = document.createElement('div');
-      newDivContentSettingsQuantity.setAttribute("class", "cart__item__content__settings__quantity");
-      newDivContentSettings.appendChild(newDivContentSettingsQuantity);
-//*______________________________________________________________Création d'une balise p qui indique le texte "Qté :"______________________________________________
-      let newPQuantite = document.createElement('p');
-      newPQuantite.innerText = "Qté :";
-      newDivContentSettingsQuantity.appendChild(newPQuantite);
 
-             //*_________________________________Création d'une balise input avec la classe "itemQuantity" qui permet de modifier la quantité___________________________
-      let newPInput = document.createElement('input');
-      newPInput.setAttribute("type", "number");
-      newPInput.setAttribute("class", "itemQuantity");
-      newPInput.setAttribute("name", "itemQuantity");
-      newPInput.setAttribute("min", "1");
-      newPInput.setAttribute("max", "100");
-      newPInput.setAttribute("value", `${quantityProductPanier}`);
-      newDivContentSettingsQuantity.appendChild(newPInput);
-//*_______________________________________Création de la div avec pour classe cart__item__content__settings__delete______________________________
-      let newDivContentSettingsDelete = document.createElement('div');
-      newDivContentSettingsDelete.setAttribute("class", "cart__item__content__settings__delete");
-      newDivContentSettings.appendChild(newDivContentSettingsDelete);
 //*________________________________________Création d'une balise p qui indique le prix du canapé______________________________________
-      let newPDelete = document.createElement('p');
-      newPDelete.setAttribute("class", "deleteItem");
-      newPDelete.innerText = "Supprimer";
-      newDivContentSettingsDelete.appendChild(newPDelete);
+      
                   //*_____________________________________________Fin Ajout Balises html____________________________________________________________
 
         //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
