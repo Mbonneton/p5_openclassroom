@@ -1,13 +1,13 @@
 
 main()
 
-async function main() {
-  const products = await getProducts()
-  let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
+function main() {
+  getProducts()
 }
-async function getProducts() {
-  return fetch("http://localhost:3000/api/products") // requête
+function getProducts() {
+  fetch("http://localhost:3000/api/products") // requête
     .then(res => res.json()) // parse du JSON
+   .then(res => affichagepanier(res)) //  l'appel de la fonction affichagepanier
     .catch(err => { // gestion d'erreur
       alert('Erreur de chargement des produits')
     })
@@ -196,7 +196,7 @@ async function getProducts() {
   });
 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
 
-  function articleparents (idproduits,colordata,produit){
+  function articleparents (idproduits,colordata,produit,quantity){
     let parentarticle = document.createElement('article')
     parentarticle.setAttribute("class","cart__item");
     parentarticle.setAttribute("data-id",idproduits)
@@ -225,26 +225,21 @@ async function getProducts() {
     let couleurproduit=document.createElement('p')
     couleurproduit.innerText=colordata
     descriptioncart.appendChild(couleurproduit)
-
-
-
-
-
     let prix = document.createElement('p')
-    prix.innerText= produit.name
+    prix.innerText= produit.price + " €"
     descriptioncart.appendChild(prix)
 
     let settingcontent =document.createElement('div')
     settingcontent.setAttribute("class", "cart__item__content__settings")
     carteitem.appendChild(settingcontent)
 
-    let quantitésetting =document.createElement('div')
+    let quantitesetting =document.createElement('div')
     quantitesetting.setAttribute("class", "cart__item__content__settings__quantity")
     settingcontent.appendChild(quantitesetting)
 
-    let quantités=document.createElement('p')
-    quantités.innerText=produit
-    quantitésetting.appendChild(quantités)
+    let quantites=document.createElement('p')
+    quantites.innerText="Qté :"
+    quantitesetting.appendChild(quantites)
 
     let quantiteitems =document.createElement('input')
     quantiteitems.setAttribute("type", "number")
@@ -252,7 +247,7 @@ async function getProducts() {
     quantiteitems.setAttribute("name", "itemQuantity")
     quantiteitems.setAttribute("min", "1")
     quantiteitems.setAttribute("max", "100")
-    quantiteitems.setAttribute("value", "produit")
+    quantiteitems.setAttribute("value",quantity)
     quantitesetting.appendChild(quantiteitems)
 
     let deletitem = document.createElement('div')
@@ -261,222 +256,162 @@ async function getProducts() {
 
     let supp = document.createElement('p')
     supp.setAttribute("class", "deleteItem")
-    supp.innerText=produit
+    supp.innerText="Supprimer"
     deletitem.appendChild(supp)
-
   }
-  ;
-
-  //*_________________________________________________________________Création d'une balise p qui indique le prix du canapé_______________________________________________________________________
-  let newPPrice = document.createElement('p');
-  newPPrice.innerText = compositionProduitsPanier.price + " €";
-  newDivContentDescription.appendChild(newPPrice);
-
-  let newDivContentSettings = document.createElement('div');
-  newDivContentSettings.setAttribute("class", "cart__item__content__settings");
-  newDivContent.appendChild(newDivContentSettings);
-
- //*__________________________________________________________Création de la div avec pour classe cart__item__content__settings__quantity_______________________________________________
-  let newDivContentSettingsQuantity = document.createElement('div');
-  newDivContentSettingsQuantity.setAttribute("class", "cart__item__content__settings__quantity");
-  newDivContentSettings.appendChild(newDivContentSettingsQuantity);
-//*______________________________________________________________Création d'une balise p qui indique le texte "Qté :"______________________________________________
-  let newPQuantite = document.createElement('p');
-  newPQuantite.innerText = "Qté :";
-  newDivContentSettingsQuantity.appendChild(newPQuantite);
-
-
-             //*_________________________________Création d'une balise input avec la classe "itemQuantity" qui permet de modifier la quantité___________________________
-  let newPInput = document.createElement('input');
-  newPInput.setAttribute("type", "number");
-  newPInput.setAttribute("class", "itemQuantity");
-  newPInput.setAttribute("name", "itemQuantity");
-  newPInput.setAttribute("min", "1");
-  newPInput.setAttribute("max", "100");
-  newPInput.setAttribute("value", `${quantityProductPanier}`);
-  newDivContentSettingsQuantity.appendChild(newPInput);
-//*_______________________________________Création de la div avec pour classe cart__item__content__settings__delete______________________________
-  let newDivContentSettingsDelete = document.createElement('div');
-  newDivContentSettingsDelete.setAttribute("class", "cart__item__content__settings__delete");
-  newDivContentSettings.appendChild(newDivContentSettingsDelete);
-
-
-
-  let newPDelete = document.createElement('p');
-  newPDelete.setAttribute("class", "deleteItem");
-  newPDelete.innerText = "Supprimer";
-  newDivContentSettingsDelete.appendChild(newPDelete);
-
-
-
-
-
-
-  function 
   function affichagepanier (data){
-    if (productRegisterInLocalStorage.length >0) {for(let i = 0; i < productRegisterInLocalStorage.length; i++){
-      let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
-      let idProductPanier = productRegisterInLocalStorage[i].idProduct;
-      quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
+    if (productRegisterInLocalStorage.length >0) {
+      for(let i = 0; i < productRegisterInLocalStorage.length; i++){
+        let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
+        let idProductPanier = productRegisterInLocalStorage[i].idProduct;
+        quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
             //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
-      const compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
+        const compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
              //*console.log(compositionProduitsPanier);
             //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
-      priceProductPanier = compositionProduitsPanier.price;
+        priceProductPanier = compositionProduitsPanier.price;
 
       //* appel de la fonction affichage panier
-      articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier)
-
-//*__________________________________________Création de la balise image qui contiendra la photo de chaque canapé_______________________________________
-
-//*_____________________________________________________Création de la div avec pour classe cart__item__content_________________________________________________________________________
-      ________Création de la div avec pour classe cart__item__content__description____________________________________________
-
-
- //*____________________________________________________Création de la div avec pour classe cart__item__content__settings__________________________________________
-
-//*________________________________________Création d'une balise p qui indique le prix du canapé______________________________________
-      
-                  //*_____________________________________________Fin Ajout Balises html____________________________________________________________
+        articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,productRegisterInLocalStorage[i].quantityProduct)
 
         //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
-      totaux();
-    }}
-        //* Si le panier est vide alors va mettre le message en avant.
-    else{compositionProduitsPanier = 'Le panier est vide !';
-    let newH2 = document.createElement('h2');
-    productsPositionHtml.appendChild(newH2);
-    newH2.innerText = compositionProduitsPanier;
+        totaux();
+      }
+    }else{
+      compositionProduitsPanier = 'Le panier est vide !';
+      let newH2 = document.createElement('h2');
+      productsPositionHtml.appendChild(newH2);
+      newH2.innerText = compositionProduitsPanier;
     //*On insère 0 dans le html pour la quantité et le prix du panier
-    document.getElementById("totalQuantity").innerText = 0;
-    document.getElementById("totalPrice").innerText = 0;
-  }
+      document.getElementById("totalQuantity").innerText = 0;
+      document.getElementById("totalPrice").innerText = 0;
+    }
 
-}
+  }
 
      //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
-boutonCommander.addEventListener("click", (event)=>{
-  event.preventDefault();
-  let lastNameErrorMsg = inputLastName.nextElementSibling;
-  checkValueLastName = regexFirstName.test(inputLastName.value);
-  if (checkValueLastName) {
-    lastNameErrorMsg.innerText = '';
-    errorFormulaireLastName = false;
-  }
-  else {
-    lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
-    errorFormulaireLastName = true;
-  }
+  boutonCommander.addEventListener("click", (event)=>{
+    event.preventDefault();
+    let lastNameErrorMsg = inputLastName.nextElementSibling;
+    checkValueLastName = regexFirstName.test(inputLastName.value);
+    if (checkValueLastName) {
+      lastNameErrorMsg.innerText = '';
+      errorFormulaireLastName = false;
+    }
+    else {
+      lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
+      errorFormulaireLastName = true;
+    }
 //*Ecoute du contenu du champ "adresse", Vérification de l'adresse et affichage d'un message si celle-ci n'est pas correcte
-  let addressErrorMsg = inputAddress.nextElementSibling;
-  checkValueAddress = regexAddress.test(inputAddress.value);
-  if (checkValueAddress) {
-    addressErrorMsg.innerText = '';
-    errorFormulaireAddress = false;
-  }
-  else {
-    addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
-    errorFormulaireAddress = true;
-  }
+    let addressErrorMsg = inputAddress.nextElementSibling;
+    checkValueAddress = regexAddress.test(inputAddress.value);
+    if (checkValueAddress) {
+      addressErrorMsg.innerText = '';
+      errorFormulaireAddress = false;
+    }
+    else {
+      addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
+      errorFormulaireAddress = true;
+    }
 
  //*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
 
-  let cityErrorMsg = inputCity.nextElementSibling;
-  checkValueCity = regexAddress.test(inputCity.value);
-  if (checkValueCity) {
-    cityErrorMsg.innerText = '';
-    errorFormulaireCity = false;
-  } else {
-    cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
-    errorFormulaireCity = true;
-  }
+    let cityErrorMsg = inputCity.nextElementSibling;
+    checkValueCity = regexAddress.test(inputCity.value);
+    if (checkValueCity) {
+      cityErrorMsg.innerText = '';
+      errorFormulaireCity = false;
+    } else {
+      cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
+      errorFormulaireCity = true;
+    }
 
  //*Ecoute du contenu du champ "email", Vérification de l'email et affichage d'un message si celui-ci n'est pas correct
 
-  let emailErrorMsg = inputEmail.nextElementSibling;
-  checkValueEmail = regexEmail.test(inputEmail.value);
-  if (checkValueEmail) {
-    emailErrorMsg.innerText = '';
-    errorFormulaireEmail = false;
-  }
-  else {
-    emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
-    errorFormulaireEmail = true;
-  }
+    let emailErrorMsg = inputEmail.nextElementSibling;
+    checkValueEmail = regexEmail.test(inputEmail.value);
+    if (checkValueEmail) {
+      emailErrorMsg.innerText = '';
+      errorFormulaireEmail = false;
+    }
+    else {
+      emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
+      errorFormulaireEmail = true;
+    }
 
-  let firstNameErrorMsg = inputFirstName.nextElementSibling;
-  checkValueFirstName = regexFirstName.test(inputFirstName.value);
-  if (checkValueFirstName) {
-    firstNameErrorMsg.innerText = '';
-    errorFormulaireFirstName = false;
-  } 
-  else {
-    firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
-    errorFormulaireFirstName = true;
-  }
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
+    checkValueFirstName = regexFirstName.test(inputFirstName.value);
+    if (checkValueFirstName) {
+      firstNameErrorMsg.innerText = '';
+      errorFormulaireFirstName = false;
+    } 
+    else {
+      firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
+      errorFormulaireFirstName = true;
+    }
       //*Empêche le rechargement de la page
-  if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
-    alert("Votre panier est vide !");
+    if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
+      alert("Votre panier est vide !");
 
-  }
-  else{
+    }
+    else{
 
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
 
         //*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
         //*________________On vérifie qu'aucun champ n'est vide_____________________
-   if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
-    alert("Vous devez renseigner tous les champs !");
-  }
+     if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
+      alert("Vous devez renseigner tous les champs !");
+    }
     //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
-  else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
-   ||errorFormulaireCity === true || errorFormulaireEmail === true){
-    alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
-}
-else{
-    //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
-  let idProducts = [];
-  for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
-    for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);}
-
+    else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
+     ||errorFormulaireCity === true || errorFormulaireEmail === true){
+      alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
   }
+  else{
+    //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
+    let idProducts = [];
+    for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
+      for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);}
+
+    }
     //*________________________________________console.log(idProducts);____________________________________________
             //*__________________________________On crée un objet dans lequel on met les infos "Contact" et les infos "Produits du panier" (l'id)_______________________________
-const order = {
-  contact: {
-    firstName: inputFirstName.value,
-    lastName: inputLastName.value,
-    address: inputAddress.value,
-    city: inputCity.value,
-    email: inputEmail.value,
-  },
-  products: idProducts,
-} 
+  const order = {
+    contact: {
+      firstName: inputFirstName.value,
+      lastName: inputLastName.value,
+      address: inputAddress.value,
+      city: inputCity.value,
+      email: inputEmail.value,
+    },
+    products: idProducts,
+  } 
       //*___________________________________________________console.log(order);_________________________________________________
             //*_______________________________________On indique la méthode d'envoi des données___________________________________
-const options = {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json', 
-    'Content-Type': 'application/json' 
-  },
-  body: JSON.stringify(order)
-};
+  const options = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json', 
+      'Content-Type': 'application/json' 
+    },
+    body: JSON.stringify(order)
+  };
     //*____________________________________________________________console.log(options);______________________________________
             //*____________________________________on envoie les données Contact et l'id des produits à l'API______________________________
-fetch("http://localhost:3000/api/products/order", options)
-.then((response) => response.json())
-.then((data) => {
+  fetch("http://localhost:3000/api/products/order", options)
+  .then((response) => response.json())
+  .then((data) => {
         //*__________________________________________________________console.log(data);_________________________________________
                 //*_________________________________________on redirige vers la page de confirmation de commande en passant l'orderId (numéro de commande) dans l'URL____________________________
-  document.location.href = `confirmation.html?orderId=${data.orderId}`;
-})
-.catch((err) => {
-  console.log("Erreur Fetch product.js", err);
-  alert ("Un problème a été rencontré lors de l'envoi du formulaire.");
-});
+    document.location.href = `confirmation.html?orderId=${data.orderId}`;
+  })
+  .catch((err) => {
+    console.log("Erreur Fetch product.js", err);
+    alert ("Un problème a été rencontré lors de l'envoi du formulaire.");
+  });
     //*____________________________________________On vide le localStorage__________________________________________________________________
-localStorage.clear();
+  localStorage.clear();
 };//*_________________________________________________________fin else________________________________________________________________________
 }
 }); //*________________________________________________________fin écoute bouton Commander_______________________________________________________
