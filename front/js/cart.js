@@ -2,14 +2,14 @@
 main()
 
 function main() {
-  getProducts()
+  getProducts() // on appel la function getProducts
 }
 function getProducts() {
-fetch("http://localhost:3000/api/products") // requête
+fetch("http://localhost:3000/api/products") // requête pour recuperé les elements.
 .then(res =>{ res.json()}) // parse du JSON
 .then(datareponse => console.log(datareponse)) //  l'appel de la fonction affichagepanier
 .catch(err => { // gestion d'erreur
-  alert('Erreur de chargement des produits')
+  alert('Erreur de chargement des produits') // affiche un message d'erreurs si le chargement ne ce fais pas.
 })
 }
 
@@ -17,7 +17,7 @@ let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
 //*console.log(productRegisterInLocalStorage.
 //*Sélection de la balise de la page product.html dans laquel on va insérer les produits et leurs infos.
 const productsPositionHtml = document.getElementById("cart__items");
-//*_______________________________________________Déclaration des variables________________________________________________________________________
+//*_______________________________________________Déclaration des variables en rapport au prix________________________________________________________________________
 let compositionProduitsPanier = [];
 
 let totalPrice = 0;  
@@ -27,7 +27,7 @@ let priceProductPanier = 0;
 let totalProductPricePanier = 0;
 let mesProduits = [];
 const findProducts = 0;
-//*---------------------------------------On déclare nos variables utilisées dans le fonction supprimer---------------------------------------------
+//*---------------------------------------On déclare nos variables utilisées dans le fonction supprimer ( toujours en rapports au prix )---------------------------------------------
 let idDelete = 0;
 let colorDelete = 0;
 //*--------------------------------------On déclare nos variables utilisées pour la validation du panier--------------------------------------------
@@ -54,7 +54,7 @@ function totalProductsPrice (){
   console.log("Total prix panier",totalPrice);
   document.getElementById("totalPrice").innerText = totalPrice; 
 }
-
+// on appel les functions qui sont introduit dans une boucle afin de les repeté si necessaire suivant les articles selectionné.
 function totaux (){
   totalProductsQuantity();
   totalProductsPrice();
