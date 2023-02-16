@@ -2,12 +2,9 @@
 main()
 
 function main() {
-  getProducts() // on appel la function getProducts
-}
-function getProducts() {
-fetch("http://localhost:3000/api/products") // requête pour recuperé les elements.
-.then(res =>{ res.json()}) // parse du JSON
-.then(datareponse => console.log(datareponse)) //  l'appel de la fonction affichagepanier
+ fetch('http://localhost:3000/api/products')
+    .then(response => response.json()) // parse du JSON
+.then(datareponse => affichagepanier(datareponse)) //  l'appel de la fonction affichagepanier
 .catch(err => { // gestion d'erreur
   alert('Erreur de chargement des produits') // affiche un message d'erreurs si le chargement ne ce fais pas.
 })
@@ -94,7 +91,7 @@ let messageErrorQuantity = false;
 function changeQuantity() {
 //*On sélectionne l'élément html (input) dans lequel la quantité est modifiée
   let changeQuantitys = document.querySelectorAll(".itemQuantity");
-  changeQuantity.forEach((item) => {
+  changeQuantitys.forEach((item) => {
 //*On écoute le changement sur l'input "itemQuantity"
     item.addEventListener("change", (event) => {
       event.preventDefault();
@@ -105,8 +102,8 @@ function changeQuantity() {
 //*console.log(myArticle);
 //*On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
 
-      let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find
-      ( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
+      let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find;
+     ( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
 
 //*Si la quantité est comprise entre 1 et 100 et que c'est un nombre entier,
 //*on met à jour la quantité dans le localStorage et le DOM.
@@ -123,7 +120,7 @@ function changeQuantity() {
 //*Sinon, on remet dans le DOM la quantité indiquée dans le localStorage et on indique un message d'erreur
       else{
         item.value = selectMyArticleInLocalStorage.quantityProduct;
-        messageErrorQuantity = true;
+        messageErrorQuantity = true;console.log("ok2");
       }
       if(messageErrorQuantity){       
         alert("La quantité d'un article (même référence et même couleur) doit être comprise entre 1 et 100 et être un nombre entier. Merci de rectifier la quantité choisie.");
@@ -196,7 +193,7 @@ inputFirstName.addEventListener('change', function() {
 });
 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
 
-function articleparents (idproduits,colordata,produit,quantity){
+function articleparents(idproduits,colordata,produit,quantity){
   let parentarticle = document.createElement('article')
   parentarticle.setAttribute("class","cart__item");
   parentarticle.setAttribute("data-id",idproduits)
@@ -204,17 +201,17 @@ function articleparents (idproduits,colordata,produit,quantity){
   productsPositionHtml.appendChild(parentarticle)
 //*________________________________________Création de la div avec pour classe cart__item__img_____________________________
 
-  let carteimg = document.createElement('div')
-  carteimg.setAttribute("class","cart_item_img")
+  let carteimg = document.createElement('div');
+  carteimg.setAttribute("class","cart__item__img")
   parentarticle.appendChild(carteimg)
   let carteitem= document.createElement('div')
   carteitem.setAttribute("class","cart__item__content")
-  parentarticle.appendChild(carteitem)
+  parentarticle.appendChild(carteitem);console.log("ok1");
   let image = document.createElement('img')
   image.setAttribute("src",produit.imageUrl)
-  image.setAttribute("alt",produit.altTxt)
-  carteimg.appendChild(baliseimg)
-  let descriptioncart = document.createElement('div')
+  image.setAttribute("alt",produit.altTxt);console.log("ok");
+  carteimg.appendChild(image);
+  let descriptioncart = document.createElement('div');
   descriptioncart.setAttribute("class","cart__item__content__description")
   carteitem.appendChild(descriptioncart)
 // mise en forme du h2 enfant de item content description.
@@ -257,36 +254,37 @@ function articleparents (idproduits,colordata,produit,quantity){
   let supp = document.createElement('p')
   supp.setAttribute("class", "deleteItem")
   supp.innerText="Supprimer"
-  deletitem.appendChild(supp)
+  deletitem.appendChild(supp);
 }
-function affichagepanier (data){
-  console.log(data)
-  if (productRegisterInLocalStorage.length >0) {
+function affichagepanier (data){ 
+  if (productRegisterInLocalStorage.length >0) { 
     for(let i = 0; i < productRegisterInLocalStorage.length; i++){
       let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
       let idProductPanier = productRegisterInLocalStorage[i].idProduct;
       quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
+    
 //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
-      const compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
-//*console.log(compositionProduitsPanier);
+    compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
+
 //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
-      priceProductPanier = compositionProduitsPanier.price;
+    priceProductPanier = compositionProduitsPanier.price;
 
 //* appel de la fonction affichage panier
-      articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,productRegisterInLocalStorage[i].quantityProduct)
+    articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,quantityProductPanier)
 
 //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
-      totaux();
+    totaux();
     }
-  }else{
-    compositionProduitsPanier = 'Le panier est vide !';
-    let newH2 = document.createElement('h2');
-    productsPositionHtml.appendChild(newH2);
-    newH2.innerText = compositionProduitsPanier;
+    changeQuantity()
+}else{
+  compositionProduitsPanier = 'Le panier est vide !';
+  let newH2 = document.createElement('h2');
+  productsPositionHtml.appendChild(newH2);
+  newH2.innerText = compositionProduitsPanier;
 //*On insère 0 dans le html pour la quantité et le prix du panier
-    document.getElementById("totalQuantity").innerText = 0;
-    document.getElementById("totalPrice").innerText = 0;
-  }
+  document.getElementById("totalQuantity").innerText = 0;
+  document.getElementById("totalPrice").innerText = 0;
+}
 
 }
 
