@@ -71,14 +71,14 @@ function recalculTotalPrice() {
   let newTotalPrice = 0;
 //* boucle sur le productRegisterInLocalStorage et dans cette boucle,
   for (const item of productRegisterInLocalStorage) {
-    const idProductsLocalStorage = item.idProduct;
-    const quantityProductsLocalStorage = item.quantityProduct;
+    const idProductsLocalStorage = item.idProduct;console.log(idProductsLocalStorage)
+    const quantityProductsLocalStorage = item.quantityProduct;console.log(mesProduits)
 //* on vérifie si l'id correspond
-    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);
+    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);console.log("ok7")
 //*console.log(findProducts);
 //* et si c'est le cas, on récupère le prix.
     if (findProducts) {
-      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;
+      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;console.log("ok8")
       newTotalPrice += newTotalProductPricePanier;
       console.log("Nouveau prix total panier",newTotalPrice);
     }
@@ -102,16 +102,15 @@ function changeQuantity() {
 //*console.log(myArticle);
 //*On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
 
-      let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find;
-     ( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
+      let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
 
 //*Si la quantité est comprise entre 1 et 100 et que c'est un nombre entier,
 //*on met à jour la quantité dans le localStorage et le DOM.
 
       if(choiceQuantity > 0 && choiceQuantity <= 100 && Number.isInteger(choiceQuantity)){
         parseChoiceQuantity = parseInt(choiceQuantity);
-        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;
-        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
+        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;console.log("ok10")
+        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));console.log(productRegisterInLocalStorage)
 //*et, on recalcule la quantité et le prix total du panier.
         recalculTotalQuantity();
         recalculTotalPrice();
@@ -120,7 +119,7 @@ function changeQuantity() {
 //*Sinon, on remet dans le DOM la quantité indiquée dans le localStorage et on indique un message d'erreur
       else{
         item.value = selectMyArticleInLocalStorage.quantityProduct;
-        messageErrorQuantity = true;console.log("ok2");
+        messageErrorQuantity = true;
       }
       if(messageErrorQuantity){       
         alert("La quantité d'un article (même référence et même couleur) doit être comprise entre 1 et 100 et être un nombre entier. Merci de rectifier la quantité choisie.");
@@ -129,42 +128,41 @@ function changeQuantity() {
   });
 }
 //*____________________________________________Fonction Suppression d'un article du panier_________________________________________________________
-function deleteProduct() {
-  let selectSupprimer = document.querySelectorAll(".deleteItem");
-  selectSupprimer.forEach((selectSupprimer) => {
-    selectSupprimer.addEventListener("click" , (event) => {
-      event.preventDefault();
+function deleteProduct() {console.log("hello")
+let selectSupprimer = document.querySelectorAll(".deleteItem");
+selectSupprimer.forEach((selectSupprimer) => {
+  selectSupprimer.addEventListener("click" , (event) => {
+    event.preventDefault();
 
 //*On pointe le parent hiérarchique <article> du lien "supprimer"
-      let myArticle = selectSupprimer.closest('article');
-      console.log(myArticle);
+    let myArticle = selectSupprimer.closest('article');
+    console.log(myArticle);
 //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
-      productRegisterInLocalStorage = productRegisterInLocalStorage.filter
-      ( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
+    productRegisterInLocalStorage = productRegisterInLocalStorage.filter( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
 
 //*On met à jour le localStorage
-      localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
+    localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
 
 //*Alerte produit supprimé
-      alert("Ce produit va être supprimé du panier.");
+    alert("Ce produit va être supprimé du panier.");
 
 
 //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
-      if (myArticle.parentNode) {
-        myArticle.parentNode.removeChild(myArticle);
-      }
+    if (myArticle.parentNode) {
+      myArticle.parentNode.removeChild(myArticle);
+    }
 //-----Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),...
 //...on affiche "Le panier est vide"-------------------------------------------------------------------
-      if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
-        messagePanierVide();
-      }
-      else{
+    if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
+      messagePanierVide();
+    }
+    else{
 // Et, on recalcule la quantité et le prix total du panier
-        recalculTotalQuantity();
-        recalculTotalPrice();
-      }
-    }); 
-  })
+      recalculTotalQuantity();
+      recalculTotalPrice();
+    }
+  }); 
+})
 }
 
 
@@ -257,48 +255,64 @@ function articleparents(idproduits,colordata,produit,quantity){
   deletitem.appendChild(supp);
 }
 function affichagepanier (data){ 
+  mesProduits=data
   if (productRegisterInLocalStorage.length >0) { 
     for(let i = 0; i < productRegisterInLocalStorage.length; i++){
       let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
       let idProductPanier = productRegisterInLocalStorage[i].idProduct;
       quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
-    
+
 //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
-    compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
+      compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
 
 //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
-    priceProductPanier = compositionProduitsPanier.price;
+      priceProductPanier = compositionProduitsPanier.price;
 
 //* appel de la fonction affichage panier
-    articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,quantityProductPanier)
+      articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,quantityProductPanier)
 
 //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
-    totaux();
+      totaux();
     }
     changeQuantity()
-}else{
-  compositionProduitsPanier = 'Le panier est vide !';
-  let newH2 = document.createElement('h2');
-  productsPositionHtml.appendChild(newH2);
-  newH2.innerText = compositionProduitsPanier;
+    deleteProduct()
+  }else{
+    compositionProduitsPanier = 'Le panier est vide !';
+    let newH2 = document.createElement('h2');
+    productsPositionHtml.appendChild(newH2);
+    newH2.innerText = compositionProduitsPanier;
 //*On insère 0 dans le html pour la quantité et le prix du panier
-  document.getElementById("totalQuantity").innerText = 0;
-  document.getElementById("totalPrice").innerText = 0;
-}
+    document.getElementById("totalQuantity").innerText = 0;
+    document.getElementById("totalPrice").innerText = 0;
+  }
 
 }
 
 //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
 boutonCommander.addEventListener("click", (event)=>{
   event.preventDefault();
+  //*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
+//*________________On vérifie qu'aucun champ n'est vide_____________________
+    if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
+      alert("Vous devez renseigner tous les champs !");
+          lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
+    errorFormulaireLastName = true;
+     addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
+    errorFormulaireAddress = true;
+     cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
+    errorFormulaireCity = true;
+      emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
+    errorFormulaireEmail = true;
+      firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
+    errorFormulaireFirstName = true;
+    }else{
   let lastNameErrorMsg = inputLastName.nextElementSibling;
   checkValueLastName = regexFirstName.test(inputLastName.value);
   if (checkValueLastName) {
     lastNameErrorMsg.innerText = '';
     errorFormulaireLastName = false;
-  }
-  else {
-    lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
+  }else {
+    lastNameErrorMsg.innerText = 'Format inccorrect caractère speciaux et chiffres interdits.';
     errorFormulaireLastName = true;
   }
 //*Ecoute du contenu du champ "adresse", Vérification de l'adresse et affichage d'un message si celle-ci n'est pas correcte
@@ -307,21 +321,20 @@ boutonCommander.addEventListener("click", (event)=>{
   if (checkValueAddress) {
     addressErrorMsg.innerText = '';
     errorFormulaireAddress = false;
-  }
-  else {
-    addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
+  }else {
+    addressErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
     errorFormulaireAddress = true;
   }
 
 //*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
 
   let cityErrorMsg = inputCity.nextElementSibling;
-  checkValueCity = regexAddress.test(inputCity.value);
+  checkValueCity = regexFirstName.test(inputCity.value);
   if (checkValueCity) {
     cityErrorMsg.innerText = '';
     errorFormulaireCity = false;
-  } else {
-    cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
+  }else {
+    cityErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
     errorFormulaireCity = true;
   }
 
@@ -332,9 +345,8 @@ boutonCommander.addEventListener("click", (event)=>{
   if (checkValueEmail) {
     emailErrorMsg.innerText = '';
     errorFormulaireEmail = false;
-  }
-  else {
-    emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
+  }else {
+    emailErrorMsg.innerText = 'Format inccorrect veuillez noter une adresse mail valide.';
     errorFormulaireEmail = true;
   }
 
@@ -343,31 +355,24 @@ boutonCommander.addEventListener("click", (event)=>{
   if (checkValueFirstName) {
     firstNameErrorMsg.innerText = '';
     errorFormulaireFirstName = false;
-  } 
-  else {
-    firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
+  }else {
+    firstNameErrorMsg.innerText = 'Format inccorrect caractères speciauxet chiffres interdits.';
     errorFormulaireFirstName = true;
   }
 //*Empêche le rechargement de la page
   if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
     alert("Votre panier est vide !");
 
-  }
-  else{
+  }else{
 
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
 
-//*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
-//*________________On vérifie qu'aucun champ n'est vide_____________________
-    if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
-      alert("Vous devez renseigner tous les champs !");
-    }
+
 //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
-    else if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
+ if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
       ||errorFormulaireCity === true || errorFormulaireEmail === true){
       alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
-  }
-  else{
+  }else{
 //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
     let idProducts = [];
     for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
@@ -412,5 +417,6 @@ boutonCommander.addEventListener("click", (event)=>{
 //*____________________________________________On vide le localStorage__________________________________________________________________
   localStorage.clear();
 };//*_________________________________________________________fin else________________________________________________________________________
+}
 }
 }); //*________________________________________________________fin écoute bouton Commander_______________________________________________________
