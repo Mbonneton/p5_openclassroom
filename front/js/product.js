@@ -30,30 +30,24 @@ function contenue (selectionproduit){
         const option = document.createElement("option");
         option.value = color;
         option.innerText = color;
-
             select.appendChild(option);// creation d'un enfant 
         })
-
                //*Sélection du bouton Ajouter au panier.
     const selectBoutonPanier = document.querySelector("#addToCart");
                  //*Ecoute du bouton Panier pour envoyer les choix de l'utilisateur
     selectBoutonPanier.addEventListener("click", (event)=>{
         events(event,selectionproduit)
-
     });
-
 }
 if (productId !== null){
 
     main()
-
 }else{
     console.log("L'id du produit n'a pas été indiqué dans l'url.");
     alert(`Le produit sélectionné n'a pas été trouvé !`);
     window.location.href = "index.html";
 }
 function events (event,selectionproduit){
-
   event.preventDefault();
                  //*Sélection de l'id pour le choix de la couleur
   const colorId = document.querySelector("#colors");
@@ -63,7 +57,6 @@ function events (event,selectionproduit){
   const quantity = document.querySelector("#quantity");
   choiceQuantity = Number(quantity.value);
   console.log(choiceQuantity);
-
                  //*Récupération des données (id, couleur et quantité) après les choix faits par l'utilisateur.
                  //*condition que la couleur soit bien sélectionnée.
                  //*et que la quantité indiquée par l'utilisateur soit comprise entre 1 et 100.
@@ -88,10 +81,8 @@ function events (event,selectionproduit){
         if(total <= 100){
                     //*On met la variable alerte sur false pour pouvoir afficher un message plus approprié    
             findProduct.quantityProduct = Number(findProduct.quantityProduct) + Number(optionsProduct.quantityProduct);
-
             alert(`La quantité du produit ${selectionproduit.name} de couleur ${choiceColor} a bien été mise à jour.`);
         }else{ //*On met la variable alert sur false pour pouvoir afficher un message plus approprié
-
             alert("La quantité d'un article (même référence et même couleur) ne peut pas dépasser 100. Merci de rectifier la quantité choisie.");
         }
     }else{ //*on met les options du produit choisi dans une variable "produitEnregistreDansLocalStorage"

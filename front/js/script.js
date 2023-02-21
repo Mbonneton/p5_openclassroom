@@ -1,16 +1,13 @@
 // Sélection de l'emplacement dans lequel on va afficher nos produits, sur la page d'accueil. Ici dans la section avec l'id "items".
 const sectionItems = document.querySelector('#items');
 // On récupère toutes les données de l'api que l'on met dans un constante listProducts
-
 main()
-
 async function main() {
   const products = await getProducts()
   for(product of products) {
     showProduct(product)
   }
 }
-
 function getProducts() {
   return fetch("http://localhost:3000/api/products") // requête
   .then(res => res.json()) // parse du JSON
@@ -18,7 +15,6 @@ function getProducts() {
     alert('Erreur de chargement des produits')
   })
 }
-
 //* recuperation des données du produits
 function showProduct(product){
 

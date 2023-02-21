@@ -5,9 +5,7 @@ const urlOrderId = new URLSearchParams(window.location.search).get("orderId");
 if(urlOrderId === null || urlOrderId === ""){
     alert ("Une erreur s'est produite lors de la validation de votre commande. Veuillez nous en excuser !");
     window.location.href = "index.html";
- }
-//*______________________________Sinon, on affiche la confirmation de la commande et le numéro de commande________________________________________
- else{
+ }else{ //*______________________________Sinon, on affiche la confirmation de la commande et le numéro de commande________________________________________
     //*___________________________________Sélection de l'élément html dans lequel on veut afficher le numéro de commande_________________________________
     const idCommande = document.getElementById("orderId");
     //*________________________________________________On insère le numéro de commande dans le html_____________________________________

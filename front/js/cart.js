@@ -1,6 +1,4 @@
-
 main()
-
 function main() {
  fetch('http://localhost:3000/api/products')
     .then(response => response.json()) // parse du JSON
@@ -9,14 +7,12 @@ function main() {
   alert('Erreur de chargement des produits') // affiche un message d'erreurs si le chargement ne ce fais pas.
 })
 }
-
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
 //*console.log(productRegisterInLocalStorage.
 //*Sélection de la balise de la page product.html dans laquel on va insérer les produits et leurs infos.
 const productsPositionHtml = document.getElementById("cart__items");
 //*_______________________________________________Déclaration des variables en rapport au prix________________________________________________________________________
 let compositionProduitsPanier = [];
-
 let totalPrice = 0;  
 let totalQuantity = 0;
 let quantityProductPanier = 0;
@@ -35,9 +31,7 @@ let errorFormulaireAddress = true;
 let errorFormulaireCity = true;
 let errorFormulaireEmail = true;
 //*_____________________________________________________________Fonctions_____________________________________________________________________
-
 //*Fonction Calcul de la quantité total d'articles dans le panier, au chargement de la page Panier.html.
-
 function totalProductsQuantity(){
   totalQuantity += parseInt(quantityProductPanier);
   console.log("Total quantité panier",totalQuantity);
@@ -45,7 +39,6 @@ function totalProductsQuantity(){
 }
 //*___________________________________________________Fonction Calcul du montant total du panier, au chargement de la page Panier.html__________________________________________
 function totalProductsPrice (){
-
   totalProductPricePanier = quantityProductPanier * priceProductPanier;
   totalPrice += totalProductPricePanier;
   console.log("Total prix panier",totalPrice);
@@ -65,7 +58,6 @@ function recalculTotalQuantity() {
   console.log("Nouvelle quantité totale panier",newTotalQuantity);
   document.getElementById("totalQuantity").innerText = newTotalQuantity;
 }
-
 //*_____________________________________Fonction Recalcul du montant total du panier, lors de la modification de la quantité ou de la suppression d'un article____________________________
 function recalculTotalPrice() {
   let newTotalPrice = 0;
@@ -98,15 +90,11 @@ function changeQuantity() {
       choiceQuantity = Number(item.value);
 //*On pointe le parent hiérarchique <article> de l'input "itemQuantity"
       let myArticle = item.closest('article');
-
 //*console.log(myArticle);
 //*On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
-
       let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
-
 //*Si la quantité est comprise entre 1 et 100 et que c'est un nombre entier,
 //*on met à jour la quantité dans le localStorage et le DOM.
-
       if(choiceQuantity > 0 && choiceQuantity <= 100 && Number.isInteger(choiceQuantity)){
         parseChoiceQuantity = parseInt(choiceQuantity);
         selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;console.log("ok10")
@@ -115,9 +103,7 @@ function changeQuantity() {
         recalculTotalQuantity();
         recalculTotalPrice();
         messageErrorQuantity = false;
-      }
-//*Sinon, on remet dans le DOM la quantité indiquée dans le localStorage et on indique un message d'erreur
-      else{
+      }else{ //*Sinon, on remet dans le DOM la quantité indiquée dans le localStorage et on indique un message d'erreur
         item.value = selectMyArticleInLocalStorage.quantityProduct;
         messageErrorQuantity = true;
       }
@@ -133,20 +119,15 @@ let selectSupprimer = document.querySelectorAll(".deleteItem");
 selectSupprimer.forEach((selectSupprimer) => {
   selectSupprimer.addEventListener("click" , (event) => {
     event.preventDefault();
-
 //*On pointe le parent hiérarchique <article> du lien "supprimer"
     let myArticle = selectSupprimer.closest('article');
     console.log(myArticle);
 //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
     productRegisterInLocalStorage = productRegisterInLocalStorage.filter( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
-
 //*On met à jour le localStorage
     localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));
-
 //*Alerte produit supprimé
     alert("Ce produit va être supprimé du panier.");
-
-
 //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
     if (myArticle.parentNode) {
       myArticle.parentNode.removeChild(myArticle);
@@ -155,8 +136,7 @@ selectSupprimer.forEach((selectSupprimer) => {
 //...on affiche "Le panier est vide"-------------------------------------------------------------------
     if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
       messagePanierVide();
-    }
-    else{
+    }else{
 // Et, on recalcule la quantité et le prix total du panier
       recalculTotalQuantity();
       recalculTotalPrice();
@@ -164,11 +144,7 @@ selectSupprimer.forEach((selectSupprimer) => {
   }); 
 })
 }
-
-
-
 //*___________________________________Contrôle des infos avec Regex et Récupération des données du formulaire____________________________________
-
 //*Création des expressions régulières pour contrôler les infos entrées par l'utilisateur
 let  regexFirstName = /^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/;
 let regexAddress = /^[#.0-9a-zA-ZÀ-ÿ\s,-]{2,60}$/; 
@@ -187,10 +163,8 @@ let checkValueCity;
 let checkValueEmail;
 //*Ecoute du contenu du champ "prénom", Vérification du prénom et affichage d'un message si celui-ci n'est pas correct
 inputFirstName.addEventListener('change', function() {
-
 });
 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
-
 function articleparents(idproduits,colordata,produit,quantity){
   let parentarticle = document.createElement('article')
   parentarticle.setAttribute("class","cart__item");
@@ -223,19 +197,15 @@ function articleparents(idproduits,colordata,produit,quantity){
   let prix = document.createElement('p')
   prix.innerText= produit.price + " €"
   descriptioncart.appendChild(prix)
-
   let settingcontent =document.createElement('div')
   settingcontent.setAttribute("class", "cart__item__content__settings")
   carteitem.appendChild(settingcontent)
-
   let quantitesetting =document.createElement('div')
   quantitesetting.setAttribute("class", "cart__item__content__settings__quantity")
   settingcontent.appendChild(quantitesetting)
-
   let quantites=document.createElement('p')
   quantites.innerText="Qté :"
   quantitesetting.appendChild(quantites)
-
   let quantiteitems =document.createElement('input')
   quantiteitems.setAttribute("type", "number")
   quantiteitems.setAttribute("class", "itemQuantity")
@@ -244,11 +214,9 @@ function articleparents(idproduits,colordata,produit,quantity){
   quantiteitems.setAttribute("max", "100")
   quantiteitems.setAttribute("value",quantity)
   quantitesetting.appendChild(quantiteitems)
-
   let deletitem = document.createElement('div')
   deletitem.setAttribute("class", "cart__item__content__settings__delete")
   settingcontent.appendChild(deletitem)
-
   let supp = document.createElement('p')
   supp.setAttribute("class", "deleteItem")
   supp.innerText="Supprimer"
@@ -261,16 +229,12 @@ function affichagepanier (data){
       let colorProductPanier = productRegisterInLocalStorage[i].colorProduct;
       let idProductPanier = productRegisterInLocalStorage[i].idProduct;
       quantityProductPanier = productRegisterInLocalStorage[i].quantityProduct;
-
 //*on ne récupère que les données des canapés dont _id (de l'api) correspondent à l'id dans le localStorage
       compositionProduitsPanier = data.find((element) => element._id === idProductPanier);
-
 //*Récupération du prix de chaque produit que l'on met dans une variable priceProductPanier
       priceProductPanier = compositionProduitsPanier.price;
-
 //* appel de la fonction affichage panier
       articleparents(idProductPanier,colorProductPanier,compositionProduitsPanier,quantityProductPanier)
-
 //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
       totaux();
     }
@@ -285,9 +249,7 @@ function affichagepanier (data){
     document.getElementById("totalQuantity").innerText = 0;
     document.getElementById("totalPrice").innerText = 0;
   }
-
 }
-
 //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________
 boutonCommander.addEventListener("click", (event)=>{
   event.preventDefault();
@@ -325,9 +287,7 @@ boutonCommander.addEventListener("click", (event)=>{
     addressErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
     errorFormulaireAddress = true;
   }
-
 //*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
-
   let cityErrorMsg = inputCity.nextElementSibling;
   checkValueCity = regexFirstName.test(inputCity.value);
   if (checkValueCity) {
@@ -337,9 +297,7 @@ boutonCommander.addEventListener("click", (event)=>{
     cityErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
     errorFormulaireCity = true;
   }
-
 //*Ecoute du contenu du champ "email", Vérification de l'email et affichage d'un message si celui-ci n'est pas correct
-
   let emailErrorMsg = inputEmail.nextElementSibling;
   checkValueEmail = regexEmail.test(inputEmail.value);
   if (checkValueEmail) {
@@ -362,12 +320,8 @@ boutonCommander.addEventListener("click", (event)=>{
 //*Empêche le rechargement de la page
   if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
     alert("Votre panier est vide !");
-
   }else{
-
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
-
-
 //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
  if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
       ||errorFormulaireCity === true || errorFormulaireEmail === true){
@@ -377,7 +331,6 @@ boutonCommander.addEventListener("click", (event)=>{
     let idProducts = [];
     for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
       for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);}
-
     }
 //*________________________________________console.log(idProducts);____________________________________________
 //*__________________________________On crée un objet dans lequel on met les infos "Contact" et les infos "Produits du panier" (l'id)_______________________________
