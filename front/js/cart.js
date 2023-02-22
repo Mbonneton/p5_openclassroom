@@ -1,10 +1,10 @@
-main()
+main();
 function main() {
- fetch('http://localhost:3000/api/products')
-    .then(response => response.json()) // parse du JSON
-.then(datareponse => affichagepanier(datareponse)) //  l'appel de la fonction affichagepanier
+ fetch('http://localhost:3000/api/products');
+    .then(response => response.json()); // parse du JSON
+.then(datareponse => affichagepanier(datareponse));//  l'appel de la fonction affichagepanier
 .catch(err => { // gestion d'erreur
-  alert('Erreur de chargement des produits') // affiche un message d'erreurs si le chargement ne ce fais pas.
+  alert('Erreur de chargement des produits');// affiche un message d'erreurs si le chargement ne ce fais pas.
 })
 }
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
@@ -63,14 +63,14 @@ function recalculTotalPrice() {
   let newTotalPrice = 0;
 //* boucle sur le productRegisterInLocalStorage et dans cette boucle,
   for (const item of productRegisterInLocalStorage) {
-    const idProductsLocalStorage = item.idProduct;console.log(idProductsLocalStorage)
-    const quantityProductsLocalStorage = item.quantityProduct;console.log(mesProduits)
+    const idProductsLocalStorage = item.idProduct;console.log(idProductsLocalStorage);
+    const quantityProductsLocalStorage = item.quantityProduct;console.log(mesProduits);
 //* on vérifie si l'id correspond
-    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);console.log("ok7")
+    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);console.log("ok7");
 //*console.log(findProducts);
 //* et si c'est le cas, on récupère le prix.
     if (findProducts) {
-      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;console.log("ok8")
+      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;console.log("ok8");
       newTotalPrice += newTotalProductPricePanier;
       console.log("Nouveau prix total panier",newTotalPrice);
     }
@@ -97,8 +97,8 @@ function changeQuantity() {
 //*on met à jour la quantité dans le localStorage et le DOM.
       if(choiceQuantity > 0 && choiceQuantity <= 100 && Number.isInteger(choiceQuantity)){
         parseChoiceQuantity = parseInt(choiceQuantity);
-        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;console.log("ok10")
-        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));console.log(productRegisterInLocalStorage)
+        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;console.log("ok10");
+        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));console.log(productRegisterInLocalStorage);
 //*et, on recalcule la quantité et le prix total du panier.
         recalculTotalQuantity();
         recalculTotalPrice();
@@ -114,7 +114,7 @@ function changeQuantity() {
   });
 }
 //*____________________________________________Fonction Suppression d'un article du panier_________________________________________________________
-function deleteProduct() {console.log("hello")
+function deleteProduct() {console.log("hello");
 let selectSupprimer = document.querySelectorAll(".deleteItem");
 selectSupprimer.forEach((selectSupprimer) => {
   selectSupprimer.addEventListener("click" , (event) => {
@@ -166,59 +166,59 @@ inputFirstName.addEventListener('change', function() {
 });
 //*_____________________________________Création de la balise article avec comme classe cart__item__________________________________
 function articleparents(idproduits,colordata,produit,quantity){
-  let parentarticle = document.createElement('article')
+  let parentarticle = document.createElement('article');
   parentarticle.setAttribute("class","cart__item");
-  parentarticle.setAttribute("data-id",idproduits)
-  parentarticle.setAttribute("data-color",colordata)
-  productsPositionHtml.appendChild(parentarticle)
+  parentarticle.setAttribute("data-id",idproduits);
+  parentarticle.setAttribute("data-color",colordata);
+  productsPositionHtml.appendChild(parentarticle);
 //*________________________________________Création de la div avec pour classe cart__item__img_____________________________
 
   let carteimg = document.createElement('div');
-  carteimg.setAttribute("class","cart__item__img")
-  parentarticle.appendChild(carteimg)
-  let carteitem= document.createElement('div')
-  carteitem.setAttribute("class","cart__item__content")
+  carteimg.setAttribute("class","cart__item__img");
+  parentarticle.appendChild(carteimg);
+  let carteitem= document.createElement('div');
+  carteitem.setAttribute("class","cart__item__content");
   parentarticle.appendChild(carteitem);console.log("ok1");
-  let image = document.createElement('img')
-  image.setAttribute("src",produit.imageUrl)
+  let image = document.createElement('img');
+  image.setAttribute("src",produit.imageUrl);
   image.setAttribute("alt",produit.altTxt);console.log("ok");
   carteimg.appendChild(image);
   let descriptioncart = document.createElement('div');
-  descriptioncart.setAttribute("class","cart__item__content__description")
-  carteitem.appendChild(descriptioncart)
+  descriptioncart.setAttribute("class","cart__item__content__description");
+  carteitem.appendChild(descriptioncart);
 // mise en forme du h2 enfant de item content description.
-  let nomproduct=document.createElement('h2')
+  let nomproduct=document.createElement('h2');
   nomproduct.innerText=produit.name
-  descriptioncart.appendChild(nomproduct)
+  descriptioncart.appendChild(nomproduct);
 // couleur du produit enfant de cart item content description.
-  let couleurproduit=document.createElement('p')
+  let couleurproduit=document.createElement('p');
   couleurproduit.innerText=colordata
-  descriptioncart.appendChild(couleurproduit)
-  let prix = document.createElement('p')
+  descriptioncart.appendChild(couleurproduit);
+  let prix = document.createElement('p');
   prix.innerText= produit.price + " €"
-  descriptioncart.appendChild(prix)
-  let settingcontent =document.createElement('div')
-  settingcontent.setAttribute("class", "cart__item__content__settings")
-  carteitem.appendChild(settingcontent)
-  let quantitesetting =document.createElement('div')
-  quantitesetting.setAttribute("class", "cart__item__content__settings__quantity")
-  settingcontent.appendChild(quantitesetting)
-  let quantites=document.createElement('p')
+  descriptioncart.appendChild(prix);
+  let settingcontent =document.createElement('div');
+  settingcontent.setAttribute("class", "cart__item__content__settings");
+  carteitem.appendChild(settingcontent);
+  let quantitesetting =document.createElement('div');
+  quantitesetting.setAttribute("class", "cart__item__content__settings__quantity");
+  settingcontent.appendChild(quantitesetting);
+  let quantites=document.createElement('p');
   quantites.innerText="Qté :"
-  quantitesetting.appendChild(quantites)
-  let quantiteitems =document.createElement('input')
-  quantiteitems.setAttribute("type", "number")
-  quantiteitems.setAttribute("class", "itemQuantity")
-  quantiteitems.setAttribute("name", "itemQuantity")
-  quantiteitems.setAttribute("min", "1")
-  quantiteitems.setAttribute("max", "100")
-  quantiteitems.setAttribute("value",quantity)
-  quantitesetting.appendChild(quantiteitems)
-  let deletitem = document.createElement('div')
-  deletitem.setAttribute("class", "cart__item__content__settings__delete")
-  settingcontent.appendChild(deletitem)
-  let supp = document.createElement('p')
-  supp.setAttribute("class", "deleteItem")
+  quantitesetting.appendChild(quantites);
+  let quantiteitems =document.createElement('input');
+  quantiteitems.setAttribute("type", "number");
+  quantiteitems.setAttribute("class", "itemQuantity");
+  quantiteitems.setAttribute("name", "itemQuantity");
+  quantiteitems.setAttribute("min", "1");
+  quantiteitems.setAttribute("max", "100");
+  quantiteitems.setAttribute("value",quantity);
+  quantitesetting.appendChild(quantiteitems);
+  let deletitem = document.createElement('div');
+  deletitem.setAttribute("class", "cart__item__content__settings__delete");
+  settingcontent.appendChild(deletitem);
+  let supp = document.createElement('p');
+  supp.setAttribute("class", "deleteItem");
   supp.innerText="Supprimer"
   deletitem.appendChild(supp);
 }
@@ -238,8 +238,8 @@ function affichagepanier (data){
 //*_______________________________Appel de la fonction pour calculer la qtité totale de produits & le prix total du panier, au chargement de la page Panier.html_____________________
       totaux();
     }
-    changeQuantity()
-    deleteProduct()
+    changeQuantity();
+    deleteProduct();
   }else{
     compositionProduitsPanier = 'Le panier est vide !';
     let newH2 = document.createElement('h2');
@@ -330,7 +330,7 @@ boutonCommander.addEventListener("click", (event)=>{
 //*__________________________Récupération des id des produits du panier, dans le localStorage___________________
     let idProducts = [];
     for (let l = 0; l<productRegisterInLocalStorage.length;l++) {
-      for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);}
+      for(let X=0; X<productRegisterInLocalStorage[l].quantityProduct;X++){ idProducts.push(productRegisterInLocalStorage[l].idProduct);};
     }
 //*________________________________________console.log(idProducts);____________________________________________
 //*__________________________________On crée un objet dans lequel on met les infos "Contact" et les infos "Produits du panier" (l'id)_______________________________
@@ -352,12 +352,12 @@ boutonCommander.addEventListener("click", (event)=>{
       'Accept': 'application/json', 
       'Content-Type': 'application/json' 
     },
-    body: JSON.stringify(order)
+    body: JSON.stringify(order);
   };
 //*____________________________________________________________console.log(options);______________________________________
 //*____________________________________on envoie les données Contact et l'id des produits à l'API______________________________
-  fetch("http://localhost:3000/api/products/order", options)
-  .then((response) => response.json())
+  fetch("http://localhost:3000/api/products/order", options);
+  .then((response) => response.json());
   .then((data) => {
 //*__________________________________________________________console.log(data);_________________________________________
 //*_________________________________________on redirige vers la page de confirmation de commande en passant l'orderId (numéro de commande) dans l'URL____________________________
