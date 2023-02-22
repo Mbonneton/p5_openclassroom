@@ -314,7 +314,7 @@ boutonCommander.addEventListener("click", (event)=>{
     firstNameErrorMsg.innerText = '';
     errorFormulaireFirstName = false;
   }else {
-    firstNameErrorMsg.innerText = 'Format inccorrect caractères speciauxet chiffres interdits.';
+    firstNameErrorMsg.innerText = 'Format inccorrect caractères speciaux et chiffres interdits.';
     errorFormulaireFirstName = true;
   }
 //*Empêche le rechargement de la page
@@ -372,4 +372,5 @@ boutonCommander.addEventListener("click", (event)=>{
 };//*_________________________________________________________fin else________________________________________________________________________
 }
 }
-}); //*________________________________________________________fin écoute bouton Commander_______________________________________________________
+}); 
+//*________________________________________________________fin écoute bouton Commander_______________________________________________________
