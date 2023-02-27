@@ -18,25 +18,25 @@ function getProducts() {
 //* recuperation des données du produits
 function showProduct(product){
 
-    let newA = document.createElement('a');
-    newA.setAttribute("href", `./product.html?id=${product._id}`);
-    sectionItems.appendChild(newA);
+  let newA = document.createElement('a');
+  newA.setAttribute("href", `./product.html?id=${product._id}`);
+  sectionItems.appendChild(newA);
 
-    let newArticle = document.createElement('article');
-    newA.appendChild(newArticle);
+  let newArticle = document.createElement('article');
+  newA.appendChild(newArticle);
 
-    let newImg = document.createElement('img');
-    newImg.setAttribute("src", product.imageUrl);
-    newImg.setAttribute("alt", product.altTxt);
-    newArticle.appendChild(newImg);
+  let newImg = document.createElement('img');
+  newImg.setAttribute("src", product.imageUrl);
+  newImg.setAttribute("alt", product.altTxt);
+  newArticle.appendChild(newImg);
 
-    let newH3 = document.createElement('h3');
-    newH3.setAttribute("class","productName");
-    newH3.innerText = product.name;
-    newArticle.appendChild(newH3);
+  let newH3 = document.createElement('h3');
+  newH3.setAttribute("class","productName");
+  newH3.innerText = product.name;
+  newArticle.appendChild(newH3);
     
-    let newP = document.createElement('p');
-    newP.setAttribute("class","productDescription");
-    newP.innerText = product.description;
-    newArticle.appendChild(newP);
+  let newP = document.createElement('p');
+  newP.setAttribute("class","productDescription");
+  newP.innerText = product.description;
+  newArticle.appendChild(newP);
 }

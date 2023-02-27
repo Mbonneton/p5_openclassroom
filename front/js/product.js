@@ -1,17 +1,14 @@
      //* récupération parametre url
 const productId = new URLSearchParams(window.location.search).get("id");
-console.log(productId);
 function main (){
     fetch(`http://localhost:3000/api/products/${productId}`)
     .then(response => response.json())
     .then(selectProduct => {
-        console.log(selectProduct);contenue(selectProduct) 
+        contenue(selectProduct) 
     })
      //*Si la promesse catch reviens erroné en rapport à l'id introuvable , alors un message alerte s'affiche : produit introuvable.
     .catch((err) => {
-        console.log("Erreur Fetch product.js : l'id du produit est incorrect.", err);
-        //alert(`Le produit sélectionné n'a pas été trouvé !`);
-       // window.location.href = "index.html";
+        alert("l'id du produit est incorrect.");
     })
     //*Si on a bien récupéré un id on récupère les données de l'API correspondant à cet id
 }
@@ -43,7 +40,6 @@ if (productId !== null){
 
     main()
 }else{
-    console.log("L'id du produit n'a pas été indiqué dans l'url.");
     alert(`Le produit sélectionné n'a pas été trouvé !`);
     window.location.href = "index.html";
 }
@@ -56,7 +52,6 @@ function events (event,selectionproduit){
                  //*Sélection de l'id pour le choix de la quantité et insertion de la quantité choisie par l'utilisateur dans une variable
   const quantity = document.querySelector("#quantity");
   choiceQuantity = Number(quantity.value);
-  console.log(choiceQuantity);
                  //*Récupération des données (id, couleur et quantité) après les choix faits par l'utilisateur.
                  //*condition que la couleur soit bien sélectionnée.
                  //*et que la quantité indiquée par l'utilisateur soit comprise entre 1 et 100.
@@ -67,7 +62,6 @@ function events (event,selectionproduit){
         colorProduct: choiceColor ,
         quantityProduct: choiceQuantity
     }
-    console.log(optionsProduct);
                    //*Déclaration de la variable "produitEnregistreDansLocalStorage" dans laquelle on récupère les keys et les values.
                 //*et qui sont dans le localStorage afin de contrôler si le localStorage est vide ou non
     let produitEnregistreDansLocalStorage = JSON.parse(localStorage.getItem("produit"));

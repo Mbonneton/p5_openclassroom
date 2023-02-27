@@ -1,11 +1,11 @@
-main();
+main()
 function main() {
- fetch('http://localhost:3000/api/products');
-    .then(response => response.json()); // parse du JSON
-.then(datareponse => affichagepanier(datareponse));//  l'appel de la fonction affichagepanier
-.catch(err => { // gestion d'erreur
-  alert('Erreur de chargement des produits');// affiche un message d'erreurs si le chargement ne ce fais pas.
-})
+  fetch(`http://localhost:3000/api/products/`)
+    .then(response => response.json()) // parse du JSON
+    .then(datareponse => affichagepanier(datareponse)) //  l'appel de la fonction affichagepanier
+    .catch(err => {  // gestion d'erreur
+      alert('Erreur de chargement des produits') // affiche un message d'erreurs si le chargement ne ce fais pas.
+    })
 }
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
 //*console.log(productRegisterInLocalStorage.
@@ -63,16 +63,15 @@ function recalculTotalPrice() {
   let newTotalPrice = 0;
 //* boucle sur le productRegisterInLocalStorage et dans cette boucle,
   for (const item of productRegisterInLocalStorage) {
-    const idProductsLocalStorage = item.idProduct;console.log(idProductsLocalStorage);
-    const quantityProductsLocalStorage = item.quantityProduct;console.log(mesProduits);
+    const idProductsLocalStorage = item.idProduct;
+    const quantityProductsLocalStorage = item.quantityProduct;
 //* on vérifie si l'id correspond
-    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);console.log("ok7");
+    const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);
 //*console.log(findProducts);
 //* et si c'est le cas, on récupère le prix.
     if (findProducts) {
-      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;console.log("ok8");
+      const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;
       newTotalPrice += newTotalProductPricePanier;
-      console.log("Nouveau prix total panier",newTotalPrice);
     }
 //*On affichage le nouveau prix total du panier dans le html
     document.getElementById("totalPrice").innerText = newTotalPrice;
@@ -131,6 +130,8 @@ selectSupprimer.forEach((selectSupprimer) => {
 //*On supprime physiquement la balise <article> du produit que l'on supprime depuis son parent, si elle existe
     if (myArticle.parentNode) {
       myArticle.parentNode.removeChild(myArticle);
+    }else{
+      alert("erreur lors de suppression du produit")
     }
 //-----Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),...
 //...on affiche "Le panier est vide"-------------------------------------------------------------------
@@ -255,75 +256,75 @@ boutonCommander.addEventListener("click", (event)=>{
   event.preventDefault();
   //*_______________On vérifie que tous les champs sont bien renseignés, sinon on indique un message à l'utilisateur____________________
 //*________________On vérifie qu'aucun champ n'est vide_____________________
-    if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
-      alert("Vous devez renseigner tous les champs !");
-          lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
+  if(!inputFirstName.value || !inputLastName.value || !inputAddress.value || !inputCity.value || !inputEmail.value){
+    alert("Vous devez renseigner tous les champs !");
+    lastNameErrorMsg.innerText = 'Veuillez indiquer un nom de famille.';
     errorFormulaireLastName = true;
-     addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
+    addressErrorMsg.innerText = 'Veuillez indiquer une adresse.';
     errorFormulaireAddress = true;
-     cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
+    cityErrorMsg.innerText = 'Veuillez indiquer le nom d\'une ville.';
     errorFormulaireCity = true;
-      emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
+    emailErrorMsg.innerText = 'Veuillez renseigner un email correct.';
     errorFormulaireEmail = true;
-      firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
+    firstNameErrorMsg.innerText = 'Veuillez indiquer un prénom.';
     errorFormulaireFirstName = true;
-    }else{
-  let lastNameErrorMsg = inputLastName.nextElementSibling;
-  checkValueLastName = regexFirstName.test(inputLastName.value);
-  if (checkValueLastName) {
-    lastNameErrorMsg.innerText = '';
-    errorFormulaireLastName = false;
-  }else {
-    lastNameErrorMsg.innerText = 'Format inccorrect caractère speciaux et chiffres interdits.';
-    errorFormulaireLastName = true;
-  }
-//*Ecoute du contenu du champ "adresse", Vérification de l'adresse et affichage d'un message si celle-ci n'est pas correcte
-  let addressErrorMsg = inputAddress.nextElementSibling;
-  checkValueAddress = regexAddress.test(inputAddress.value);
-  if (checkValueAddress) {
-    addressErrorMsg.innerText = '';
-    errorFormulaireAddress = false;
-  }else {
-    addressErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
-    errorFormulaireAddress = true;
-  }
-//*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
-  let cityErrorMsg = inputCity.nextElementSibling;
-  checkValueCity = regexFirstName.test(inputCity.value);
-  if (checkValueCity) {
-    cityErrorMsg.innerText = '';
-    errorFormulaireCity = false;
-  }else {
-    cityErrorMsg.innerText = 'Format inccorrect caractère speciaux interdits.';
-    errorFormulaireCity = true;
-  }
-//*Ecoute du contenu du champ "email", Vérification de l'email et affichage d'un message si celui-ci n'est pas correct
-  let emailErrorMsg = inputEmail.nextElementSibling;
-  checkValueEmail = regexEmail.test(inputEmail.value);
-  if (checkValueEmail) {
-    emailErrorMsg.innerText = '';
-    errorFormulaireEmail = false;
-  }else {
-    emailErrorMsg.innerText = 'Format inccorrect veuillez noter une adresse mail valide.';
-    errorFormulaireEmail = true;
-  }
-
-  let firstNameErrorMsg = inputFirstName.nextElementSibling;
-  checkValueFirstName = regexFirstName.test(inputFirstName.value);
-  if (checkValueFirstName) {
-    firstNameErrorMsg.innerText = '';
-    errorFormulaireFirstName = false;
-  }else {
-    firstNameErrorMsg.innerText = 'Format inccorrect caractères speciaux et chiffres interdits.';
-    errorFormulaireFirstName = true;
-  }
-//*Empêche le rechargement de la page
-  if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
-    alert("Votre panier est vide !");
   }else{
+    let lastNameErrorMsg = inputLastName.nextElementSibling;
+    checkValueLastName = regexFirstName.test(inputLastName.value);
+    if (checkValueLastName) {
+      lastNameErrorMsg.innerText = '';
+      errorFormulaireLastName = false;
+    }else {
+      lastNameErrorMsg.innerText = 'Format incorrect caractère speciaux et chiffres interdits.';
+      errorFormulaireLastName = true;
+    }
+//*Ecoute du contenu du champ "adresse", Vérification de l'adresse et affichage d'un message si celle-ci n'est pas correcte
+    let addressErrorMsg = inputAddress.nextElementSibling;
+    checkValueAddress = regexAddress.test(inputAddress.value);
+    if (checkValueAddress) {
+      addressErrorMsg.innerText = '';
+      errorFormulaireAddress = false;
+    }else {
+      addressErrorMsg.innerText = 'Format incorrect caractère speciaux interdits.';
+      errorFormulaireAddress = true;
+    }
+//*Ecoute du contenu du champ "ville", Vérification de la ville et affichage d'un message si celle-ci n'est pas correcte
+    let cityErrorMsg = inputCity.nextElementSibling;
+    checkValueCity = regexFirstName.test(inputCity.value);
+    if (checkValueCity) {
+      cityErrorMsg.innerText = '';
+      errorFormulaireCity = false;
+    }else {
+      cityErrorMsg.innerText = 'Format incorrect caractère speciaux interdits.';
+      errorFormulaireCity = true;
+    }
+//*Ecoute du contenu du champ "email", Vérification de l'email et affichage d'un message si celui-ci n'est pas correct
+    let emailErrorMsg = inputEmail.nextElementSibling;
+    checkValueEmail = regexEmail.test(inputEmail.value);
+    if (checkValueEmail) {
+      emailErrorMsg.innerText = '';
+      errorFormulaireEmail = false;
+    }else {
+      emailErrorMsg.innerText = 'Format incorrect veuillez noter une adresse mail valide.';
+      errorFormulaireEmail = true;
+    }
+
+    let firstNameErrorMsg = inputFirstName.nextElementSibling;
+    checkValueFirstName = regexFirstName.test(inputFirstName.value);
+    if (checkValueFirstName) {
+      firstNameErrorMsg.innerText = '';
+      errorFormulaireFirstName = false;
+    }else {
+      firstNameErrorMsg.innerText = 'Format incorrect caractères speciaux et chiffres interdits.';
+      errorFormulaireFirstName = true;
+    }
+//*Empêche le rechargement de la page
+    if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){ 
+      alert("Votre panier est vide !");
+    }else{
 //*__________________________________________Gestion du formulaire de contact et validation de la commande________________________________________
 //*_______________________________On vérifie que les champs sont correctement remplis suivant les regex mises en place__________________________
- if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
+     if(errorFormulaireFirstName === true || errorFormulaireLastName === true || errorFormulaireAddress === true
       ||errorFormulaireCity === true || errorFormulaireEmail === true){
       alert("Veuillez vérifier les champs du formulaire et les remplir correctement !");
   }else{
@@ -352,19 +353,17 @@ boutonCommander.addEventListener("click", (event)=>{
       'Accept': 'application/json', 
       'Content-Type': 'application/json' 
     },
-    body: JSON.stringify(order);
+    body: JSON.stringify(order)
   };
 //*____________________________________________________________console.log(options);______________________________________
 //*____________________________________on envoie les données Contact et l'id des produits à l'API______________________________
-  fetch("http://localhost:3000/api/products/order", options);
-  .then((response) => response.json());
+  fetch("http://localhost:3000/api/products/order", options).then((response) => response.json())
   .then((data) => {
 //*__________________________________________________________console.log(data);_________________________________________
 //*_________________________________________on redirige vers la page de confirmation de commande en passant l'orderId (numéro de commande) dans l'URL____________________________
     document.location.href = `confirmation.html?orderId=${data.orderId}`;
   })
   .catch((err) => {
-    console.log("Erreur Fetch product.js", err);
     alert ("Un problème a été rencontré lors de l'envoi du formulaire.");
   });
 //*____________________________________________On vide le localStorage__________________________________________________________________
@@ -373,4 +372,3 @@ boutonCommander.addEventListener("click", (event)=>{
 }
 }
 }); 
-//*________________________________________________________fin écoute bouton Commander_______________________________________________________
