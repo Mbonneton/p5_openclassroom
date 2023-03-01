@@ -60,7 +60,6 @@ function events (event,selectionproduit){
         colorProduct: choiceColor ,
         quantityProduct: choiceQuantity
     } 
-    
 //*Déclaration de la variable "produitEnregistreDansLocalStorage" dans laquelle on récupère les keys et les values.
 //*et qui sont dans le localStorage afin de contrôler si le localStorage est vide ou non
     let produitEnregistreDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
