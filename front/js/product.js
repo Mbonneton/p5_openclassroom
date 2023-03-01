@@ -30,7 +30,7 @@ function contenue (selectionproduit){
         })
         //*Sélection du bouton Ajouter au panier.
     const selectBoutonPanier = document.querySelector("#addToCart");
-    //*Ecoute du bouton Panier pour envoyer les choix de l'utilisateur
+    //*Ecoute du bouton Panier pour envoyer les choix de l'utilisateur---
     selectBoutonPanier.addEventListener("click", (event)=>{
         events(event,selectionproduit)
     });
@@ -59,7 +59,8 @@ function events (event,selectionproduit){
         idProduct: selectionproduit._id ,
         colorProduct: choiceColor ,
         quantityProduct: choiceQuantity
-    }
+    } 
+    
 //*Déclaration de la variable "produitEnregistreDansLocalStorage" dans laquelle on récupère les keys et les values.
 //*et qui sont dans le localStorage afin de contrôler si le localStorage est vide ou non
     let produitEnregistreDansLocalStorage = JSON.parse(localStorage.getItem("produit"));
