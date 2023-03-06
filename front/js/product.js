@@ -1,11 +1,11 @@
      //* récupération parametre url
-     const productId = new URLSearchParams(window.location.search).get("id");
-     function main (){
-      fetch(`http://localhost:3000/api/products/${productId}`)
-      .then(response => response.json())
-      .then(selectProduct => {
+const productId = new URLSearchParams(window.location.search).get("id");
+function main (){
+  fetch(`http://localhost:3000/api/products/${productId}`)
+  .then(response => response.json())
+  .then(selectProduct => {
         contenue(selectProduct) 
-      })
+   })
   //*Si la promesse catch reviens erroné en rapport à l'id introuvable , alors un message alerte s'affiche : produit introuvable.
   .catch((err) => {
     alert("l'id du produit est incorrect.");
