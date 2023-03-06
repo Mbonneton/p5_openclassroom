@@ -26,7 +26,7 @@ function contenue (selectionproduit){
       const option = document.createElement("option");
       option.value = color;
       option.innerText = color;
-        select.appendChild(option);// creation d'un enfant 
+      select.appendChild(option);// creation d'un enfant 
       })
     //*Sélection du bouton Ajouter au panier.
     const selectBoutonPanier = document.querySelector("#addToCart");
