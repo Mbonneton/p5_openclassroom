@@ -8,7 +8,6 @@ function main() {
     })
 }
 let productRegisterInLocalStorage = JSON.parse(localStorage.getItem("produit"));
-//*console.log(productRegisterInLocalStorage.
 //*Sélection de la balise de la page product.html dans laquel on va insérer les produits et leurs infos.
 const productsPositionHtml = document.getElementById("cart__items");
 //*_______________________________________________Déclaration des variables en rapport au prix________________________________________________________________________
@@ -34,7 +33,6 @@ let errorFormulaireEmail = true;
 //*Fonction Calcul de la quantité total d'articles dans le panier, au chargement de la page Panier.html.
 function totalProductsQuantity(){
   totalQuantity += parseInt(quantityProductPanier);
-  console.log("Total quantité panier",totalQuantity);
   document.getElementById("totalQuantity").innerText = totalQuantity;
 }
 //*___________________________________________________Fonction Calcul du montant total du panier, au chargement de la page Panier.html__________________________________________
@@ -96,8 +94,8 @@ function changeQuantity() {
 //*on met à jour la quantité dans le localStorage et le DOM.
       if(choiceQuantity > 0 && choiceQuantity <= 100 && Number.isInteger(choiceQuantity)){
         parseChoiceQuantity = parseInt(choiceQuantity);
-        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;console.log("ok10");
-        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage));console.log(productRegisterInLocalStorage);
+        selectMyArticleInLocalStorage.quantityProduct = parseChoiceQuantity;
+        localStorage.setItem("produit", JSON.stringify(productRegisterInLocalStorage))
 //*et, on recalcule la quantité et le prix total du panier.
         recalculTotalQuantity();
         recalculTotalPrice();
@@ -113,14 +111,13 @@ function changeQuantity() {
   });
 }
 //*____________________________________________Fonction Suppression d'un article du panier_________________________________________________________
-function deleteProduct() {console.log("hello");
+function deleteProduct() {
 let selectSupprimer = document.querySelectorAll(".deleteItem");
 selectSupprimer.forEach((selectSupprimer) => {
   selectSupprimer.addEventListener("click" , (event) => {
     event.preventDefault();
 //*On pointe le parent hiérarchique <article> du lien "supprimer"
     let myArticle = selectSupprimer.closest('article');
-    console.log(myArticle);
 //*on filtre les éléments du localStorage pour ne garder que ceux qui sont différents de l'élément qu'on supprime
     productRegisterInLocalStorage = productRegisterInLocalStorage.filter( element => element.idProduct !== myArticle.dataset.id || element.colorProduct !== myArticle.dataset.color );
 //*On met à jour le localStorage
@@ -133,10 +130,11 @@ selectSupprimer.forEach((selectSupprimer) => {
     }else{
       alert("erreur lors de suppression du produit")
     }
+
 //-----Si, du coup, le panier est vide (le localStorage est vide ou le tableau qu'il contient est vide),...
 //...on affiche "Le panier est vide"-------------------------------------------------------------------
     if(productRegisterInLocalStorage === null || productRegisterInLocalStorage.length === 0){
-      messagePanierVide();
+      messagePanierVide()
     }else{
 // Et, on recalcule la quantité et le prix total du panier
       recalculTotalQuantity();
@@ -144,6 +142,18 @@ selectSupprimer.forEach((selectSupprimer) => {
     }
   }); 
 })
+}
+function messagePanierVide () {
+  let messagepv="aucun article dans le panier"
+  let messagepv1=document.createElement('h2')
+  messagepv1.innerText=messagepv
+  messagepv1.setAttribute("id","panierh2")
+  let messagepv2=document.getElementById('cart__items')
+  messagepv2.appendChild(messagepv1)
+  let messagepv3=document.getElementsByClassName('cart__price') 
+  messagepv3[0].setAttribute("style","display:none")
+  let messagepv4=document.getElementsByClassName('cart__order')
+  messagepv4[0].setAttribute("style","display:none")
 }
 //*___________________________________Contrôle des infos avec Regex et Récupération des données du formulaire____________________________________
 //*Création des expressions régulières pour contrôler les infos entrées par l'utilisateur
@@ -179,10 +189,10 @@ function articleparents(idproduits,colordata,produit,quantity){
   parentarticle.appendChild(carteimg);
   let carteitem= document.createElement('div');
   carteitem.setAttribute("class","cart__item__content");
-  parentarticle.appendChild(carteitem);console.log("ok1");
+  parentarticle.appendChild(carteitem)
   let image = document.createElement('img');
   image.setAttribute("src",produit.imageUrl);
-  image.setAttribute("alt",produit.altTxt);console.log("ok");
+  image.setAttribute("alt",produit.altTxt)
   carteimg.appendChild(image);
   let descriptioncart = document.createElement('div');
   descriptioncart.setAttribute("class","cart__item__content__description");
@@ -242,13 +252,8 @@ function affichagepanier (data){
     changeQuantity();
     deleteProduct();
   }else{
-    compositionProduitsPanier = 'Le panier est vide !';
-    let newH2 = document.createElement('h2');
-    productsPositionHtml.appendChild(newH2);
-    newH2.innerText = compositionProduitsPanier;
-//*On insère 0 dans le html pour la quantité et le prix du panier
-    document.getElementById("totalQuantity").innerText = 0;
-    document.getElementById("totalPrice").innerText = 0;
+    messagePanierVide()
+ 
   }
 }
 //*________________________________________________________________Ecoute du bouton Commander___________________________________________________________

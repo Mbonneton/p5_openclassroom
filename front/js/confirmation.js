@@ -10,5 +10,4 @@ if(urlOrderId === null || urlOrderId === ""){
     const idCommande = document.getElementById("orderId");
     //*________________________________________________On insère le numéro de commande dans le html_____________________________________
     idCommande.innerText = urlOrderId;
-    console.log(idCommande);
 }
