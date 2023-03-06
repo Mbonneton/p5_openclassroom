@@ -39,7 +39,6 @@ function totalProductsQuantity(){
 function totalProductsPrice (){
   totalProductPricePanier = quantityProductPanier * priceProductPanier;
   totalPrice += totalProductPricePanier;
-  console.log("Total prix panier",totalPrice);
   document.getElementById("totalPrice").innerText = totalPrice; 
 }
 // on appel les functions qui sont introduit dans une boucle afin de les repeté si necessaire suivant les articles selectionné.
@@ -53,7 +52,6 @@ function recalculTotalQuantity() {
   for (const item of productRegisterInLocalStorage) {
     newTotalQuantity += parseInt(item.quantityProduct);
   }
-  console.log("Nouvelle quantité totale panier",newTotalQuantity);
   document.getElementById("totalQuantity").innerText = newTotalQuantity;
 }
 //*_____________________________________Fonction Recalcul du montant total du panier, lors de la modification de la quantité ou de la suppression d'un article____________________________
@@ -65,7 +63,6 @@ function recalculTotalPrice() {
     const quantityProductsLocalStorage = item.quantityProduct;
 //* on vérifie si l'id correspond
     const findProducts = mesProduits.find((element) => element._id === idProductsLocalStorage);
-//*console.log(findProducts);
 //* et si c'est le cas, on récupère le prix.
     if (findProducts) {
       const newTotalProductPricePanier = findProducts.price * quantityProductsLocalStorage;
@@ -87,7 +84,6 @@ function changeQuantity() {
       choiceQuantity = Number(item.value);
 //*On pointe le parent hiérarchique <article> de l'input "itemQuantity"
       let myArticle = item.closest('article');
-//*console.log(myArticle);
 //*On récupère dans le localStorage l'élément (même id et même couleur) dont on veut modifier la quantité
       let selectMyArticleInLocalStorage = productRegisterInLocalStorage.find( element => element.idProduct === myArticle.dataset.id && element.colorProduct === myArticle.dataset.color );
 //*Si la quantité est comprise entre 1 et 100 et que c'est un nombre entier,
